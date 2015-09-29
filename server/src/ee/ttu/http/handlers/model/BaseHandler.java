@@ -4,10 +4,17 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Map;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
+import ee.ttu.http.service.ParamsHelper;
+import ee.ttu.util.Log;
 
 public abstract class BaseHandler implements HttpHandler {
 	
@@ -82,6 +89,68 @@ public abstract class BaseHandler implements HttpHandler {
 	public Boolean checkHeaderPresent(String name, HttpExchange httpExchange) {
 		return httpExchange.getRequestHeaders().containsKey( name );
 		
+	}
+	
+	// TODO do GETs need headers at all?
+	public String sendGET( Map<String, String> requestParams, String URL ) {
+		return send("GET", null, requestParams, null, URL);
+	}
+	
+	public String sendPOST( String requestBody, Map<String, String> requestHeaders, String URL ) {
+		return send("POST", requestBody, null, requestHeaders, URL);
+	}
+	
+	String send(String requestMethod, String requestBody, Map<String, String> requestParams, Map<String, String> requestHeaders, String plainURL ) {
+		URLConnection connection = null;
+		BufferedReader br = null;
+		
+		try {
+			if ( requestParams != null ) {
+				ParamsHelper paramsHelper = new ParamsHelper();
+				plainURL = ( plainURL += paramsHelper.create( requestParams ) );
+				Log.debug("final URL -> " + plainURL);
+			}
+			
+			URL url = new URL( plainURL );
+			connection = url.openConnection();
+			Log.info( "Opened connection to " + connection.getURL() );
+			
+			if ( requestHeaders != null ) {
+				for ( String name: requestHeaders.keySet() ) {
+					connection.setRequestProperty( name , requestHeaders.get( name ) );
+				}
+			}
+			
+			if ( requestBody != null ) {
+				try ( OutputStream output = connection.getOutputStream() ) {
+				    output.write( requestBody.getBytes() );
+				    Log.debug("Successfully wrote request body to output");
+				}
+			}
+			
+			connection.setUseCaches(false);
+			
+			br = new BufferedReader( new InputStreamReader( connection.getInputStream() ));
+			StringBuffer response = new StringBuffer();
+			String line = null;
+			while (true) {
+				line = br.readLine();
+				Log.debug("Got line : " + line);
+				if (line != null)
+					response.append(line);
+				else break;
+			}
+			Log.info( "Got response : " + response.toString() );
+			if (br != null) br.close();
+			
+			// Send the result of our GET to the initial request
+			return response.toString();
+		} catch (Exception ex) {
+			// Always catch these kinds of exceptions
+			
+			Log.error( ex.getMessage() );
+			return null;
+		}
 	}
 
 }
