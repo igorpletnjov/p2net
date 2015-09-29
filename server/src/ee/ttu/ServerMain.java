@@ -37,6 +37,15 @@ public class ServerMain {
 		ResourceHolder.getContextList().add( server.createContext( "/json", new JsonHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/send", new SendHandler() ) );
 		
+		/*
+		 * Eventually, we'll have:
+		 *  /resource - uses sendGET if ttl>0, extends GetHandler, later sendPOST to reply (idk lol)
+		 *  /resourcereply - extends PostHandler
+		 *  /checkmd5 - extends PostHandler, later sendPOST to answermd5
+		 *  /answermd5 - extends PostHandler
+		 *  /crack - extends GetHandler, manually starts the entire process
+		 */
+		
 		server.setExecutor(null);
 		server.start();
 

@@ -2,6 +2,7 @@ package ee.ttu.http.service;
 
 import ee.ttu.http.model.IntegerPair;
 import ee.ttu.http.model.JsonObject;
+import ee.ttu.util.Log;
 
 public class JsonParser {
 	
@@ -28,7 +29,8 @@ public class JsonParser {
 		IntegerPair integerPair = new IntegerPair();
 		jsonObject.getSymbolRange().add( integerPair );
 		
-		System.out.println("DEBUG: Parsed Json Object : " + jsonObject.toString());
+		// Eventually...
+		Log.debug( "Parsed Json Object : " + jsonObject.toString() );
 		
 		return jsonObject;
 	}

@@ -10,7 +10,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import ee.ttu.http.handlers.model.GetHandler;
 
-// Mostly a test class
+// TODO Just a test/showcase class, do not use this TODO
 // Will have to make SendGetHandler and SendPostHandler base sending classes + unique class methods
 public class SendHandler extends GetHandler {
 	

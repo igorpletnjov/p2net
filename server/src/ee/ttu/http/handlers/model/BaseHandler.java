@@ -91,7 +91,8 @@ public abstract class BaseHandler implements HttpHandler {
 		
 	}
 	
-	// TODO do GETs need headers at all?
+	// Sending to other destinations
+	
 	public String sendGET( Map<String, String> requestParams, String URL ) {
 		return send("GET", null, requestParams, null, URL);
 	}
@@ -113,6 +114,10 @@ public abstract class BaseHandler implements HttpHandler {
 			
 			URL url = new URL( plainURL );
 			connection = url.openConnection();
+			
+			if ( "POST".equals( requestMethod ) ) // Makes the request a POST, otherwise it's a GET
+				connection.setDoOutput( true );
+			
 			Log.info( "Opened connection to " + connection.getURL() );
 			
 			if ( requestHeaders != null ) {
@@ -129,6 +134,7 @@ public abstract class BaseHandler implements HttpHandler {
 			}
 			
 			connection.setUseCaches(false);
+			//connection.connect();
 			
 			br = new BufferedReader( new InputStreamReader( connection.getInputStream() ));
 			StringBuffer response = new StringBuffer();
@@ -143,10 +149,10 @@ public abstract class BaseHandler implements HttpHandler {
 			Log.info( "Got response : " + response.toString() );
 			if (br != null) br.close();
 			
-			// Send the result of our GET to the initial request
+			// Everything went well, got a response
 			return response.toString();
 		} catch (Exception ex) {
-			// Always catch these kinds of exceptions
+			// Something went wrong, we probably don't have a response to return
 			
 			Log.error( ex.getMessage() );
 			return null;
