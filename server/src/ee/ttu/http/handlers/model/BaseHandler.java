@@ -18,6 +18,8 @@ import ee.ttu.util.Log;
 
 public abstract class BaseHandler implements HttpHandler {
 	
+	// TODO This class should not be extended by non-model (abstract class) handlers TODO
+	
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		System.err.println("DEBUG: Got new request: " + getRequestInfo(httpExchange) );

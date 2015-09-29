@@ -5,6 +5,8 @@ import java.util.List;
 
 public class JsonObject {
 	
+	// This is for /resource POST json only
+	
 	String ip;
 	String port;
 	String id;
