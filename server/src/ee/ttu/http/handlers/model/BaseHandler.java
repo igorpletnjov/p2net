@@ -22,9 +22,9 @@ public abstract class BaseHandler implements HttpHandler {
 	
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
-		System.err.println("DEBUG: Got new request: " + getRequestInfo(httpExchange) );
-		System.err.println("DEBUG: Request headers: " + getRequestHeaders(httpExchange) );
-		System.err.println("DEBUG: Request body: " + getRequestBody(httpExchange) );
+		Log.debug("DEBUG: Got new request: " + getRequestInfo(httpExchange) );
+		Log.debug("DEBUG: Request headers: " + getRequestHeaders(httpExchange) );
+		Log.debug("DEBUG: Request body: " + getRequestBody(httpExchange) );
 	}
 	
 	// When encountering errors/exceptions
