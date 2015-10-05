@@ -105,4 +105,28 @@ public class JsonParser {
 		return null;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// there is now a json library so idk about all this lol
+	//
+	// http://www.json.org/java/
+	// much simpler
+	//
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
