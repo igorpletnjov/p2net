@@ -3,8 +3,6 @@ package ee.ttu.md5;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 public class MD5Cracker {
 	
 	 private char[] charset;
@@ -18,7 +16,7 @@ public class MD5Cracker {
 	    public static String wildcard;
 
 	    public MD5Cracker() {
-	        charset = "abcdefghijklmnopqrstuvwxyzAEIOU0123456789".toCharArray();
+	        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 	        min = 1; //char min start
 	        max = 7; //char max end 
 	    }
@@ -61,7 +59,7 @@ public class MD5Cracker {
 	    	double duration;
 	    	System.out.println("md5 cracker");
 	    	System.out.println("cracking in progres...");
-	    	toCrack="17de7832728f3ede291623dea0e0a377"; // praks
+	    	toCrack="dd97813dd40be87559aaefed642c3fbb"; // "igor"
 	        MD5Cracker bruteforce = new MD5Cracker();
 	        for (int length = bruteforce.min; length < bruteforce.max; length++) { // Change bruteforce.min and bruteforce.max for number of characters to bruteforce. 
 	            bruteforce.generate("", 0, length-1); //prepend_string, pos, length 

@@ -4,8 +4,13 @@ import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
 
+import ee.ttu.http.handlers.AnswerMD5Handler;
+import ee.ttu.http.handlers.CheckMD5Handler;
+import ee.ttu.http.handlers.CrackHandler;
 import ee.ttu.http.handlers.IndexHandler;
 import ee.ttu.http.handlers.JsonHandler;
+import ee.ttu.http.handlers.ResourceHandler;
+import ee.ttu.http.handlers.ResourceReplyHandler;
 import ee.ttu.http.handlers.SendHandler;
 import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.util.Log;
@@ -14,6 +19,7 @@ import ee.ttu.util.Log;
  * autori(d):
  * 
  * Igor Pletnjov 135213IAPB 
+ * Silver Saul, 120754IAPB :)
  * 
  */
 
@@ -37,16 +43,12 @@ public class ServerMain {
 		ResourceHolder.getContextList().add( server.createContext( "/index", new IndexHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/json", new JsonHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/send", new SendHandler() ) );
-		
-		/*
-		 * Eventually, we'll have:
-		 *  /resource - uses sendGET if ttl>0, extends GetHandler, later sendPOST to reply (idk lol)
-		 *  /resourcereply - extends PostHandler
-		 *  /checkmd5 - extends PostHandler, later sendPOST to answermd5
-		 *  /answermd5 - extends PostHandler
-		 *  /crack - extends GetHandler, manually starts the entire process
-		 */
-		
+		ResourceHolder.getContextList().add( server.createContext( "/resource", new ResourceHandler() ) ); //later sendPOST to reply (igor doesn't know lol)
+		ResourceHolder.getContextList().add( server.createContext( "/resourcereply", new ResourceReplyHandler() ) );
+		ResourceHolder.getContextList().add( server.createContext( "/checkmd5", new CheckMD5Handler() ) ); //later sendPOST to answermd5
+		ResourceHolder.getContextList().add( server.createContext( "/answermd5", new AnswerMD5Handler() ) );
+		ResourceHolder.getContextList().add( server.createContext( "/crack", new CrackHandler() ) ); //manually starts the entire process
+
 		server.setExecutor(null);
 		server.start();
 
