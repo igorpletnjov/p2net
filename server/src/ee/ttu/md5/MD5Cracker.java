@@ -59,7 +59,7 @@ public class MD5Cracker {
 	    	double duration;
 	    	System.out.println("md5 cracker");
 	    	System.out.println("cracking in progres...");
-	    	toCrack="dd97813dd40be87559aaefed642c3fbb"; // "igor"
+	    	toCrack="dd97813dd40be87559aaefed642c3fbb"; // "igor" :^)
 	        MD5Cracker bruteforce = new MD5Cracker();
 	        for (int length = bruteforce.min; length < bruteforce.max; length++) { // Change bruteforce.min and bruteforce.max for number of characters to bruteforce. 
 	            bruteforce.generate("", 0, length-1); //prepend_string, pos, length 
