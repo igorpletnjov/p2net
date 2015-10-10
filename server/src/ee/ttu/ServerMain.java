@@ -24,6 +24,8 @@ import ee.ttu.util.Log;
  */
 
 public class ServerMain {
+	
+	static int port = 1215;
 
 	public static void main(String[] args) throws Exception {
 		HttpServer server = null;
@@ -32,10 +34,10 @@ public class ServerMain {
 			if (args.length > 1)
 				server = HttpServer.create(new InetSocketAddress( Integer.parseInt(args[0]) ), 0);
 			else
-				server = HttpServer.create(new InetSocketAddress( 1215 ), 0);
+				server = HttpServer.create(new InetSocketAddress( port ), 0);
 		} catch (NumberFormatException nfex) {
 			Log.error("Invalid port :" + args[0]);
-			server = HttpServer.create(new InetSocketAddress( 1215 ), 0);
+			server = HttpServer.create(new InetSocketAddress( port ), 0);
 		}
 		
 		Log.info("Started server on port " + server.getAddress().getPort());
