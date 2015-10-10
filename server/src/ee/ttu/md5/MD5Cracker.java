@@ -11,7 +11,6 @@ public class MD5Cracker {
 	    private int max; //var added for max char length
 	    public static String code;
 	    public static String hash;
-	    public static String toCrack;
 	    public static String strTemp;
 	    public static String wildcard;
 
@@ -21,7 +20,7 @@ public class MD5Cracker {
 	        max = 7; //char max end 
 	    }
 
-	    public String generate(String str, int pos, int length) {
+	    public String generate(String str, int pos, int length, String toCrack) {
 	        if (length == 0) {
 	            try {
 					MessageDigest m = MessageDigest.getInstance("MD5");
@@ -45,30 +44,29 @@ public class MD5Cracker {
 	                if(hash.toLowerCase().equals(toCrack)) {
 	                	return strTemp;
 	                } else {
-	                code = generate(str + charset[i], i, length-1);
+	                code = generate(str + charset[i], i, length-1,toCrack);
 	                }
 	            }
-	        }
-	        
+	        }   
 
 	        return code;
 	    }
 
-	    public static void main(String[] args) {
+	    public static String calculator(String toCrack) {
 	    	final double startTime = System.currentTimeMillis();
 	    	double duration;
-	    	System.out.println("md5 cracker");
-	    	System.out.println("cracking in progres...");
-	    	toCrack="dd97813dd40be87559aaefed642c3fbb"; // "igor" :^)
+	    	System.out.println("MD5 Cracker");
+	    	System.out.println("Cracking in progress...");
 	        MD5Cracker bruteforce = new MD5Cracker();
 	        for (int length = bruteforce.min; length < bruteforce.max; length++) { // Change bruteforce.min and bruteforce.max for number of characters to bruteforce. 
-	            bruteforce.generate("", 0, length-1); //prepend_string, pos, length 
+	            bruteforce.generate("", 0, length-1, toCrack); //prepend_string, pos, length 
 	            duration = (System.currentTimeMillis() - startTime) / 1000;
 	            if(hash.toLowerCase().equals(toCrack)) {
 	            	System.out.println("Cracked it ## " + strTemp + " ## Time taken: " + duration + " seconds");
-	            	return;
+	            	return strTemp;
 	            }
 	            System.out.println("String length is: " + (strTemp.length() + 1) +" chars. Time taken: " + duration + " seconds");
 	        }
+			return null;
 	    }
 	}
