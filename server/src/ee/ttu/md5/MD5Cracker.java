@@ -3,6 +3,8 @@ package ee.ttu.md5;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import ee.ttu.util.Log;
+
 public class MD5Cracker {
 	
 	 private char[] charset;
@@ -65,7 +67,7 @@ public class MD5Cracker {
 	            	System.out.println("Cracked it ## " + strTemp + " ## Time taken: " + duration + " seconds");
 	            	return strTemp;
 	            }
-	            System.out.println("String length is: " + (strTemp.length() + 1) +" chars. Time taken: " + duration + " seconds");
+	            System.out.println("String length is: " + (strTemp.length() + 1) +" chars. Time taken: " + duration + " seconds"); 
 	        }
 			return null;
 	    }

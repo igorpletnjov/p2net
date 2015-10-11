@@ -21,16 +21,18 @@ public class CrackHandler extends GetHandler{
 		
 		String[] split =  uri.split("=");
 		
-		Log.debug("Hash: " + split[1]);
+		String hashToCrack = split[1];
+		
+		Log.debug("Hash: " + hashToCrack);
 		
 		MD5Cracker cracker = new MD5Cracker();
-		String result = cracker.calculator("dd97813dd40be87559aaefed642c3fbb"); // "igor" :^)
+		String result = cracker.calculator(hashToCrack); 
 		
-		// TODO sends this hash out by pieces to the network
+		// TODO sends this hashToCrack out by pieces to the network
 		
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
-		response.append("<html><body> Hash: " + split[1] + " <br> Answer: " + result + "</body></html>");
+		response.append("<html><body> Hash: " + hashToCrack + " <br> Answer: " + result + "</body></html>");
 		sendResponse( response.toString(), httpExchange ); 
 	}
 }
