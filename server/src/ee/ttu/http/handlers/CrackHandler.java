@@ -1,6 +1,7 @@
 package ee.ttu.http.handlers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -32,16 +33,18 @@ public class CrackHandler extends GetHandler{
 		
 		// TODO sends this hashToCrack out by pieces to the network
 		TextReader file = new TextReader();
-		String test = file.TextReader("machines.txt");
-		
-		//JsonParser machines= new JsonParser();
-		//Map<String, String> machineList = machines.parseJson(test); //TODO
-		
-		//System.out.println(machineList.toString());
+		ArrayList machines = new ArrayList();
+		machines = file.TextReader("machines.txt");
+
+		//System.out.println(machines);
 		
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
-		response.append("<html><body> Hash: " + hashToCrack + " <br> Answer: " + result + "</body></html>");
+		response.append("<html><body> Hash: " + hashToCrack + " <br> Answer: " + result + "<br><br> Machines: ");
+		for (int i = 0; i < machines.size(); i++){
+			response.append("<br>" + machines.get(i));
+		}
+		response.append("</body></html>");
 		sendResponse( response.toString(), httpExchange ); 
 	}
 }

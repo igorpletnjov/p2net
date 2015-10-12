@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import ee.ttu.util.Log;
 
 public class TextReader {
-	public String TextReader(String fileName) {
+	public ArrayList TextReader(String fileName) {
 	    String line;  // This will reference one line at a time
 	    String text = "";
 
@@ -37,10 +37,7 @@ public class TextReader {
 	        	//Add together the ip and port
 	        	network.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
 	        }
-	        
-	        Log.info("Machine list: " + network.allMachines.toString());
-
-	        bufferedReader.close(); // Always close files.
+	        return network.allMachines;
 	    }
 	    catch(FileNotFoundException ex) {
 	        System.out.println(
@@ -50,6 +47,6 @@ public class TextReader {
 	        System.out.println(
 	            "Error reading file '" + fileName + "'");                  
 	    }
-		return text;
+		return null;
 	}
 }
