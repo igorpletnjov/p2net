@@ -106,6 +106,7 @@ public abstract class BaseHandler implements HttpHandler {
 	String send(String requestMethod, String requestBody, Map<String, String> requestParams, Map<String, String> requestHeaders, String plainURL ) {
 		URLConnection connection = null;
 		BufferedReader br = null;
+		plainURL = "http://" + plainURL;
 		
 		try {
 			if ( requestParams != null ) {

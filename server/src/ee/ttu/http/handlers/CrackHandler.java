@@ -2,14 +2,11 @@ package ee.ttu.http.handlers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import ee.ttu.http.handlers.model.BaseHandler;
 import ee.ttu.http.handlers.model.GetHandler;
-import ee.ttu.http.service.JsonParser;
-import ee.ttu.http.service.ParamsHelper;
 import ee.ttu.http.service.TextReader;
 import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
@@ -30,13 +27,12 @@ public class CrackHandler extends GetHandler{
 		
 		Log.debug("Hash: " + hashToCrack);
 		
-		MD5Cracker cracker = new MD5Cracker();
-		String result = cracker.calculator(hashToCrack); 
+		String result = MD5Cracker.calculator(hashToCrack); 
 		
 		// TODO sends this hashToCrack out by pieces to the network
 		TextReader file = new TextReader();
-		ArrayList machines = new ArrayList();
-		machines = file.TextReader("machines.txt");
+		List<String> machines = new ArrayList<String>();
+		machines = file.readText("machines.txt");
 
 		Log.info(machines.toString());
 		

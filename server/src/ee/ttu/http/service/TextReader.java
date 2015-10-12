@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import ee.ttu.util.Log;
 
 public class TextReader {
-	public ArrayList TextReader(String fileName) {
+	public List<String> readText(String fileName) {
 	    String line = "";  // This will reference one line at a time
 	    String text = "";
 
@@ -32,12 +32,13 @@ public class TextReader {
 	        
 	        String[] machinesSplit = text.split(",");
 	        
-	        NetworkCache network = new NetworkCache();
+	        
 	        for (int i = 0; i < machinesSplit.length; i = i+2){
 	        	//Add together the ip and port
-	        	network.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
+	        	NetworkCache.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
 	        }
-	        return network.allMachines;
+	        bufferedReader.close();
+	        return NetworkCache.allMachines;
 	    }
 	    catch(FileNotFoundException ex) {
 	        System.out.println(

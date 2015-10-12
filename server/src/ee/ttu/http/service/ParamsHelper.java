@@ -1,6 +1,8 @@
 package ee.ttu.http.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ee.ttu.util.Log;
@@ -9,8 +11,8 @@ public class ParamsHelper {
 	
 	// Will parse URI parameters and map them
 	
-	public Map<String, String> parse(String uri) {
-		Map<String, String> params = new HashMap<>();
+	public Map<String, List<String>> parse(String uri) {
+		Map<String, List<String>> params = new HashMap<>();
 		
 		// debug: Should be safe
 		String[] splitParams = uri.split("&");
@@ -21,7 +23,13 @@ public class ParamsHelper {
 				Log.warn("Invalid URI parameter, " + nameValue);
 				continue;
 			}
-			params.put(nameValue[0], nameValue[1]);
+			if ( params.containsKey( nameValue[0]) ) {
+				params.get(nameValue[0]).add(nameValue[1]);
+			} else {
+				List<String> valueList = new ArrayList<>();
+				valueList.add(nameValue[1]);
+				params.put(nameValue[0], valueList);
+			}
 		}
 
 		Log.debug("Got params " + params.toString());
