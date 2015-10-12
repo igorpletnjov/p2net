@@ -37,10 +37,11 @@ public class ParamsHelper {
 	}
 	
 	public String create( Map<String, String> params ) {
-		StringBuffer paramString = new StringBuffer("/?");
+		StringBuffer paramString = new StringBuffer("?");
 		for ( String name: params.keySet() ) {
-			paramString.append("&" + name +  "=" + params.get(name) );
+			paramString.append(name +  "=" + params.get(name) + "&" );
 		}
+		paramString.deleteCharAt(paramString.length()-1); // Delete the last &
 		
 		return paramString.toString();
 	}
