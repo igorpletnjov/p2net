@@ -45,5 +45,26 @@ public class ParamsHelper {
 		return paramString.toString();
 	}
 	
+	// shitty fucking hack because im way too lazy
+    String createNoAsk( List<String> noask ) {
+		String retval = "=" + noask.remove(0);
+		for ( String ip : noask) {
+			retval += "&noask=" + ip;
+		}
+		return retval;
+	}
+	
+	public Map<String, String> createResourceParams(String sendip, String sendport, String id, Integer ttl, List<String> noask) {
+		Map<String, String> requestParams = new HashMap<>();
+		requestParams.put("sendip", sendip);
+		requestParams.put("sendport", sendport);
+		if( id != null)
+			requestParams.put("id", id);
+		requestParams.put("ttl", String.valueOf(ttl--) );
+		if ( noask != null && !noask.isEmpty() )
+			requestParams.put("noask", createNoAsk(noask));
+		
+		return requestParams;
+	}
 
 }

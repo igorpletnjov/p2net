@@ -17,14 +17,14 @@ import ee.ttu.util.Log;
 //Ressursipäringu saatmine ja edasisaatmine
 public class ResourceHandler extends GetHandler {
 	
-	ParamsHelper parameters = new ParamsHelper();
+	ParamsHelper paramsHelper = new ParamsHelper();
 	
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		super.handle(httpExchange);
 		
 		Log.debug("URI: " + httpExchange.getRequestURI().getQuery().toString());
-		Map<String, List<String>> parsedParameters = parameters.parse(httpExchange.getRequestURI().getQuery().toString());
+		Map<String, List<String>> parsedParameters = paramsHelper.parse(httpExchange.getRequestURI().getQuery().toString());
 		
 		//example: http://11.22.33.44:2345/resource?sendip=55.66.77.88&sendport=6788&ttl=5&id=wqeqwe23&noask=11.22.33.44_345&noask=111.222.333.444_223
 		
@@ -52,28 +52,24 @@ public class ResourceHandler extends GetHandler {
 			}
 			
 			if ( ttl > 0 ) {
+				
+				Map<String, String> requestParams = paramsHelper.createResourceParams(sendip, sendport, id, ttl, noask);
 				for ( String machine: NetworkCache.getAllMachines() ) {
 					if ( noask != null && !noask.isEmpty() ) {
 						if ( noask.contains(machine) )
 							continue;
 					}
 					
-					Map<String, String> cacheParams = new HashMap<>();
-					cacheParams.put("ip", machine);
-					cacheParams.put("sendip", sendip);
-					if ( id != null )
-						cacheParams.put("id", id);
-					NetworkCache.getPendingResourceReplies().add(cacheParams);
-					
-					
-					if ( sendip.equals(machine) ) // obv dont fuckin send it back lmao
+					if ( (sendip + sendport).equals(machine) ) // obv dont fuckin send it back lmao
 						continue;
 					
-					// TODO put our own IP into the noask array?
-					// TODO decrement ttl by 1
-					sendGET( null, machine ); // TODO put actual parameters instead of null
+					sendGET( requestParams, machine + "/resource" );
 				}
 			}
+			
+			sendPOST(null, null, sendip + ":" + sendport + "/resourcereply"); // TODO JSON as request body
+			
+			
 		} catch (Exception ex) {
 			Log.error("Error parsing parameters ->" + ex.getMessage());
 			sendEmptyResponse(500, httpExchange);

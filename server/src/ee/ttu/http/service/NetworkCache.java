@@ -10,11 +10,6 @@ public class NetworkCache {
 	static HashSet<String> readyMachines = new HashSet<>();
 	static List<String> allMachines = new ArrayList<>(); 
 	
-	static List< Map<String, String> > pendingResourceReplies = new ArrayList<>();
-	
-	public static List< Map<String, String>> getPendingResourceReplies() {
-		return pendingResourceReplies;
-	}
 	public static HashSet<String> getReadyMachines() {
 		return readyMachines;
 	}

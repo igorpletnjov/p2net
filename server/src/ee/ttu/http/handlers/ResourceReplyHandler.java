@@ -13,11 +13,6 @@ public class ResourceReplyHandler extends PostHandler {
 	public void handle(HttpExchange httpExchange) throws IOException {
 		super.handle(httpExchange);
 		
-		// blah blah parse json and shit
-		
-		// if NetworkCache.getPendingResourceReplies() contains "ip" (as sendip) and maybe also the correct "id" idk, 
-		// send back to original requester (defined as ip)
-		
 		/*
 		POST'itatud data:
 			{"ip": "55.66.77.88", 
