@@ -7,6 +7,7 @@ import java.util.List;
 import com.sun.net.httpserver.HttpExchange;
 
 import ee.ttu.http.handlers.model.GetHandler;
+import ee.ttu.http.service.NetworkCache;
 import ee.ttu.http.service.TextReader;
 import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
@@ -30,19 +31,15 @@ public class CrackHandler extends GetHandler{
 		String result = MD5Cracker.calculator(hashToCrack); 
 		
 		// TODO sends this hashToCrack out by pieces to the network
-		TextReader file = new TextReader();
-		List<String> machines = new ArrayList<String>();
-		machines = file.readText("machines.txt");
 
-		Log.info(machines.toString());
 		
 		//sendGET(null, "http://www.example.com");
 		
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
 		response.append("<html><body> Hash: " + hashToCrack + " <br> Answer: " + result + "<br><br> Machines: ");
-		for (int i = 0; i < machines.size(); i++){
-			response.append("<br>" + machines.get(i));
+		for (int i = 0; i < NetworkCache.getAllMachines().size(); i++){
+			response.append("<br>" + NetworkCache.getAllMachines().get(i));
 		}
 		response.append("</body></html>");
 		sendResponse( response.toString(), httpExchange ); 

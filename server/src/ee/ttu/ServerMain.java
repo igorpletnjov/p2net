@@ -1,6 +1,8 @@
 package ee.ttu;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -13,6 +15,7 @@ import ee.ttu.http.handlers.ResourceHandler;
 import ee.ttu.http.handlers.ResourceReplyHandler;
 import ee.ttu.http.handlers.SendHandler;
 import ee.ttu.http.service.ResourceHolder;
+import ee.ttu.http.service.TextReader;
 import ee.ttu.util.Log;
 
 /*
@@ -41,6 +44,12 @@ public class ServerMain {
 		}
 		
 		Log.info("Started server on port " + server.getAddress().getPort());
+		
+		TextReader file = new TextReader();
+		List<String> machines = new ArrayList<String>();
+		machines = file.readText("machines.txt");
+		
+		Log.info(machines.toString());
 		
 		ResourceHolder.getContextList().add( server.createContext( "/index", new IndexHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/json", new JsonHandler() ) );
