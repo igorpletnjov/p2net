@@ -10,7 +10,7 @@ import ee.ttu.util.Log;
 
 public class TextReader {
 	public ArrayList TextReader(String fileName) {
-	    String line;  // This will reference one line at a time
+	    String line = "";  // This will reference one line at a time
 	    String text = "";
 
 	    try {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
+
+import ee.ttu.http.handlers.model.BaseHandler;
 import ee.ttu.http.handlers.model.GetHandler;
 import ee.ttu.http.service.JsonParser;
 import ee.ttu.http.service.ParamsHelper;
@@ -36,7 +38,9 @@ public class CrackHandler extends GetHandler{
 		ArrayList machines = new ArrayList();
 		machines = file.TextReader("machines.txt");
 
-		//System.out.println(machines);
+		Log.info(machines.toString());
+		
+		//sendGET(null, "http://www.example.com");
 		
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
