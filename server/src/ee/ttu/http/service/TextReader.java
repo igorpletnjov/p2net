@@ -34,7 +34,8 @@ public class TextReader {
 	        
 	        NetworkCache network = new NetworkCache();
 	        for (int i = 0; i < machinesSplit.length; i = i+2){
-	        	network.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]);
+	        	//Add together the ip and port
+	        	network.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
 	        }
 	        
 	        Log.info("Machine list: " + network.allMachines.toString());
