@@ -40,7 +40,7 @@ public class CrackHandler extends GetHandler{
 		parameters.put("sendport", String.valueOf(NetworkCache.getServerPort()));
 		parameters.put("ttl", "5");
 		parameters.put("id", "laksfwe34");
-		parameters.put("noask", NetworkCache.getServerIP());
+		parameters.put("noask", NetworkCache.getServerIP() + "_" + String.valueOf(NetworkCache.getServerPort()));
 		
 		//http://11.22.33.44:2345/resource?sendip=55.66.77.88&sendport=6788&ttl=5&id=wqeqwe23&noask=11.22.33.44_345&noask=111.222.333.444_223
 		for (String machine : NetworkCache.getAllMachines()){
