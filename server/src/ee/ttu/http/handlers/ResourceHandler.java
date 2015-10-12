@@ -36,35 +36,47 @@ public class ResourceHandler extends GetHandler {
 				Log.error("Mising request parameter -> " + key);
 			}
 		}
-		
-		String sendip = parsedParameters.get("sendip").get(0);
-		String sendport = parsedParameters.get("sendport").get(0);
-		Integer ttl = 0;
 		try {
-			ttl = Integer.parseInt( parsedParameters.get("ttl").get(0) );
-		} catch (Exception ex) {
-			Log.warn("Error parsing ttl -> " + ttl);
-			ttl = 0;
-		}
-		
-		// Optional
-		String id = parsedParameters.get("id").get(0);
-		List<String> noask = parsedParameters.get("noask");
-		
-		if ( ttl > 0 ) {
-			for ( String machine: NetworkCache.getAllMachines() ) {
-				if ( noask != null && !noask.isEmpty() ) {
-					if ( noask.contains(machine) )
-						continue;
-				}
-				
-				if ( sendip.equals(machine) ) // obv dont fuckin send it back lmao
-					continue;
-				
-				// TODO put our own IP into the noask array?
-				// TODO decrement ttl by 1
-				sendGET( null, machine ); // TODO put actual parameters instead of null
+			String sendip = parsedParameters.get("sendip").get(0);
+			String sendport = parsedParameters.get("sendport").get(0);
+			Integer ttl = Integer.parseInt( parsedParameters.get("ttl").get(0) );
+			
+			// Optional
+			String id = null;
+			List<String> noask = null;
+			try {
+				id = parsedParameters.get("id").get(0);
+				noask = parsedParameters.get("noask");
+			} catch (Exception ex) {
+				Log.warn("Missing optional parameter, excpetion -> " + ex.getMessage());
 			}
+			
+			if ( ttl > 0 ) {
+				for ( String machine: NetworkCache.getAllMachines() ) {
+					if ( noask != null && !noask.isEmpty() ) {
+						if ( noask.contains(machine) )
+							continue;
+					}
+					
+					Map<String, String> cacheParams = new HashMap<>();
+					cacheParams.put("ip", machine);
+					cacheParams.put("sendip", sendip);
+					if ( id != null )
+						cacheParams.put("id", id);
+					NetworkCache.getPendingResourceReplies().add(cacheParams);
+					
+					
+					if ( sendip.equals(machine) ) // obv dont fuckin send it back lmao
+						continue;
+					
+					// TODO put our own IP into the noask array?
+					// TODO decrement ttl by 1
+					sendGET( null, machine ); // TODO put actual parameters instead of null
+				}
+			}
+		} catch (Exception ex) {
+			Log.error("Error parsing parameters ->" + ex.getMessage());
+			sendEmptyResponse(500, httpExchange);
 		}
 		
 		// TODO sendResponse("0", httpExchange); <- tannu tahab nii
