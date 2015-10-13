@@ -33,7 +33,7 @@ public class ServerMain {
 		HttpServer server = null;
 		NetworkCache.setServerIP("localhost");
 		NetworkCache.setServerPort(1215);
-		//For testing: remove machines.txt, activate 1216, 1217,1218, add machines.txt, activate 1215
+		//For testing: remove machines.txt, activate 1216, 1217,1218, add machines.txt, activate 1215 - doesnt actually work :(
 		
 		try {
 			if (args.length > 1)
@@ -54,11 +54,11 @@ public class ServerMain {
 		ResourceHolder.getContextList().add( server.createContext( "/index", new IndexHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/json", new JsonHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/send", new SendHandler() ) );
-		ResourceHolder.getContextList().add( server.createContext( "/resource", new ResourceHandler() ) ); //later sendPOST to reply (igor doesn't know lol)
+		ResourceHolder.getContextList().add( server.createContext( "/resource", new ResourceHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/resourcereply", new ResourceReplyHandler() ) );
-		ResourceHolder.getContextList().add( server.createContext( "/checkmd5", new CheckMD5Handler() ) ); //later sendPOST to answermd5
+		ResourceHolder.getContextList().add( server.createContext( "/checkmd5", new CheckMD5Handler() ) ); 
 		ResourceHolder.getContextList().add( server.createContext( "/answermd5", new AnswerMD5Handler() ) );
-		ResourceHolder.getContextList().add( server.createContext( "/crack", new CrackHandler() ) ); //manually starts the entire process
+		ResourceHolder.getContextList().add( server.createContext( "/crack", new CrackHandler() ) ); 
 
 		server.setExecutor(null);
 		server.start();

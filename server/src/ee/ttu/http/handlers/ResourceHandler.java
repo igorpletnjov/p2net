@@ -92,8 +92,8 @@ public class ResourceHandler extends GetHandler {
 				Log.info("RequestBody: " + requestbody);
 				
 				Map<String, String> requestheader = new HashMap<String, String>();
-				requestheader.put("Content-Type", "application/json"); //TODO
-				sendPOST(requestbody, requestheader, sendip + ":" + sendport + "/resourcereply"); // TODO JSON as request body
+				requestheader.put("Content-Type", "application/json");
+				sendPOST(requestbody, requestheader, sendip + ":" + sendport + "/resourcereply");
 			}
 
 			
