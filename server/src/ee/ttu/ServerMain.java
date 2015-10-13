@@ -24,7 +24,7 @@ import ee.ttu.util.Log;
  * 
  * Igor Pletnjov 135213IAPB 
  * Silver Saul, 120754IAPB
- * 
+ * Sten-Hendrik Pihlak, 134672IAPB
  */
 
 public class ServerMain {
@@ -33,6 +33,7 @@ public class ServerMain {
 		HttpServer server = null;
 		NetworkCache.setServerIP("localhost");
 		NetworkCache.setServerPort(1215);
+		//For testing: remove machines.txt, activate 1216, 1217,1218, add machines.txt, activate 1215
 		
 		try {
 			if (args.length > 1)

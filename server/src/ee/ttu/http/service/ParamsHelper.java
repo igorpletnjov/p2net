@@ -46,9 +46,9 @@ public class ParamsHelper {
 		return paramString.toString();
 	}
 	
-	// shitty fucking hack because im way too lazy
+	//Create multiple noasks
     String createNoAsk( List<String> noask ) {
-		String retval = "=" + noask.remove(0);
+		String retval = noask.remove(0); //removed "=" + 
 		for ( String ip : noask) {
 			retval += "&noask=" + ip;
 		}

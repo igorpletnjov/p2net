@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class NetworkCache {
-	static HashSet<String> readyMachines = new HashSet<>();
+	public static HashSet<String> readyMachines = new HashSet<>(); //Public?
 	static List<String> allMachines = new ArrayList<>(); 
 	static String serverIP;
 	static int serverPort;

@@ -63,7 +63,8 @@ public abstract class BaseHandler implements HttpHandler {
 		return headerString.toString();
 	}
 	
-	String getRequestBody( HttpExchange httpExchange ) throws IOException {
+	public String getRequestBody( HttpExchange httpExchange ) throws IOException {
+		
 		StringBuffer body = new StringBuffer();
 		BufferedReader br = new BufferedReader( new InputStreamReader( httpExchange.getRequestBody() ) );
 		
@@ -74,6 +75,9 @@ public abstract class BaseHandler implements HttpHandler {
 			else
 				break;
 		}
+		
+		Log.info(body.toString());
+		
 		return body.toString();
 	}
 	

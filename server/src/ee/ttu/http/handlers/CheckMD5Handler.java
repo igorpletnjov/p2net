@@ -10,6 +10,8 @@ public class CheckMD5Handler extends PostHandler{
 	public void handle(HttpExchange httpExchange) throws IOException {
 		super.handle(httpExchange);
 		
+		
+		
 		/* 
 		POST-itatud data:
 			{"ip": "55.66.77.88", 

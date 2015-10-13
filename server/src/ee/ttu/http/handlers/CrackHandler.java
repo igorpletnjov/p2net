@@ -11,11 +11,12 @@ import com.sun.net.httpserver.HttpExchange;
 import ee.ttu.ServerMain;
 import ee.ttu.http.handlers.model.GetHandler;
 import ee.ttu.http.service.NetworkCache;
+import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.http.service.TextReader;
 import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
 
-
+//This class starts everything
 public class CrackHandler extends GetHandler{
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
@@ -28,28 +29,42 @@ public class CrackHandler extends GetHandler{
 		Log.debug("URI: " + uri);
 		
 		String[] split =  uri.split("=");
-		String hashToCrack = split[1];
+		ResourceHolder.setHashToCrack(split[1]);
 		
-		Log.debug("Hash: " + hashToCrack);
+		Log.debug("Hash: " + ResourceHolder.getHashToCrack());
 		
-		// TODO sends this hashToCrack out by pieces to the network
-		String result = MD5Cracker.calculator(hashToCrack); 
+		//Old way : arvutame kohe. Actual way: jagame tükkideks laiali, allpool
+		//String result = MD5Cracker.calculator(hashToCrack); 
 
+		ResourceHolder.setId("laksfwe34");
+		
 		Map<String, String> parameters = new HashMap();
 		parameters.put("sendip", NetworkCache.getServerIP());
 		parameters.put("sendport", String.valueOf(NetworkCache.getServerPort()));
 		parameters.put("ttl", "5");
-		parameters.put("id", "laksfwe34");
+		parameters.put("id", ResourceHolder.getId());
 		parameters.put("noask", NetworkCache.getServerIP() + "_" + String.valueOf(NetworkCache.getServerPort()));
 		
 		//http://11.22.33.44:2345/resource?sendip=55.66.77.88&sendport=6788&ttl=5&id=wqeqwe23&noask=11.22.33.44_345&noask=111.222.333.444_223
 		for (String machine : NetworkCache.getAllMachines()){
 			sendGET(parameters, machine + "/resource");
 		}
+		
+		//Aeg läheb käima
+		final double startTime = System.currentTimeMillis();
+		double duration = (System.currentTimeMillis() - startTime) / 1000;
+		
+		try {
+		    Thread.sleep(1000); //1000 = 1 sec. Testimise jaoks vähe. Pärast paneme rohkem.
+		} catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
+		
+		Log.info("TESTINGYO");
 
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
-		response.append("<html><body> Hash: " + hashToCrack + " <br> Answer: " + result + "<br><br> Machines: ");
+		response.append("<html><body> Hash: " + ResourceHolder.getHashToCrack() + " <br> Answer: " + "SIIA TULEB TULEMUS" + "<br><br> Machines: ");
 		for (int i = 0; i < NetworkCache.getAllMachines().size(); i++){
 			response.append("<br>" + NetworkCache.getAllMachines().get(i));
 		}

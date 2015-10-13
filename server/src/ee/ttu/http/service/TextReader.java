@@ -32,12 +32,15 @@ public class TextReader {
 	        
 	        String[] machinesSplit = text.split(",");
 
-	        for (int i = 0; i < machinesSplit.length; i = i+2){
-	        	//Add together the ip and port
-	        	NetworkCache.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
+	        if (text != ""){
+	        	 for (int i = 0; i < machinesSplit.length; i = i+2){
+	 	        	//Add together the ip and port
+	 	        	NetworkCache.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
+	 	        }
+	 	        
+	 	        Log.info("List of machines: " + NetworkCache.allMachines);
 	        }
-	        
-	        Log.info("List of machines: " + NetworkCache.allMachines);
+	       
 	        bufferedReader.close();
 	    }
 	    catch(FileNotFoundException ex) {

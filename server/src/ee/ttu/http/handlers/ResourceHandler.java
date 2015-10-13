@@ -27,19 +27,22 @@ public class ResourceHandler extends GetHandler {
 		Map<String, List<String>> parsedParameters = paramsHelper.parse(httpExchange.getRequestURI().getQuery().toString());
 		
 		//example: http://11.22.33.44:2345/resource?sendip=55.66.77.88&sendport=6788&ttl=5&id=wqeqwe23&noask=11.22.33.44_345&noask=111.222.333.444_223
-		
+		//example2 http://localhost:1215/resource?sendip=localhost&sendport=1216&ttl=5&id=wqeqwe23&noask=localhost_1216&noask=localhost_1217
 		
 		for (String key: Constants.REQUIRED_RESOURCE_PARAMETERS) {
+			//Checks if correct parameters
 			List<String> value = parsedParameters.get(key);
 			if ( value == null || value.isEmpty() ) {
 				sendEmptyResponse(400, httpExchange);
-				Log.error("Mising request parameter -> " + key);
+				Log.error("Missing request parameter -> " + key);
 			}
 		}
 		try {
+			//Gives parameter values to our variables
 			String sendip = parsedParameters.get("sendip").get(0);
 			String sendport = parsedParameters.get("sendport").get(0);
-			Integer ttl = Integer.parseInt( parsedParameters.get("ttl").get(0) );
+			Integer ttl = (Integer.parseInt( parsedParameters.get("ttl").get(0) )-1 ); //ttl - 1
+			Integer resource = 100;
 			
 			// Optional
 			String id = null;
@@ -51,38 +54,60 @@ public class ResourceHandler extends GetHandler {
 				Log.warn("Missing optional parameter, excpetion -> " + ex.getMessage());
 			}
 			
-			if ( ttl > 0 ) {
+			Log.info("SendIP: " + sendip + "; sendPort: " + sendport + "; ttl: " + ttl + "; id: " + id + "; noask: " + noask);
+			
+			if ( ttl > 1 ) { //"Seejuures ei saadeta päringut edasi, kui sissetulnud ttl oli 1 või vähem"
 				
 				Map<String, String> requestParams = paramsHelper.createResourceParams(sendip, sendport, id, ttl, noask);
+				//Create new parameters
+				String machineToNoask;
 				for ( String machine: NetworkCache.getAllMachines() ) {
+					machineToNoask = machine.replaceAll(":", "_");
+					
 					if ( noask != null && !noask.isEmpty() ) {
-						if ( noask.contains(machine) )
+						if ( noask.contains(machineToNoask) )
+							//Doesn't send if a machine in our list is on noask list
 							continue;
 					}
 					
-					if ( (sendip + sendport).equals(machine) ) // obv dont fuckin send it back lmao
+					if ( (sendip + ":" +  sendport).equals(machine) ) //Dont send it back to the original (should be on noask though)
 						continue;
 					
 					sendGET( requestParams, machine + "/resource" );
 				}
 			}
 			
-			sendPOST(null, null, sendip + ":" + sendport + "/resourcereply"); // TODO JSON as request body
-			
+			if (resource > 0){
+				//Send resourcereply to the original computer
+				String requestbody;
+				if (id != null){
+					//Bruteforce much
+					requestbody = "{\"ip\":\""  + NetworkCache.getServerIP() + "\",\"port\":\"" + NetworkCache.getServerPort()
+					+ "\",\"id\":\"" + id + "\",\"resource\":" + resource + "}";
+				} else {
+					requestbody = "{\"ip\":\""  + NetworkCache.getServerIP() + "\",\"port\":\"" + NetworkCache.getServerPort()
+					+	"\",\"resource\":" + resource + "}";
+				}
+				
+				Log.info("RequestBody: " + requestbody);
+				
+				Map<String, String> requestheader = new HashMap<String, String>();
+				requestheader.put("Content-Type", "application/json"); //TODO
+				sendPOST(requestbody, requestheader, sendip + ":" + sendport + "/resourcereply"); // TODO JSON as request body
+			}
+
 			
 		} catch (Exception ex) {
 			Log.error("Error parsing parameters ->" + ex.getMessage());
 			sendEmptyResponse(500, httpExchange);
 		}
 		
-		// TODO sendResponse("0", httpExchange); <- tannu tahab nii
+		sendResponse("0", httpExchange); // "GET-päringu vastuseks on õnnestunud päringu korral number 0"
 		
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
 		response.append("<html><body> Current URI:" + parsedParameters.toString() + "</body></html>");
 		sendResponse( response.toString(), httpExchange ); 
-	
-		
 		
 		/*
 			resource: ütleb, et tegu ressursipäringuga
