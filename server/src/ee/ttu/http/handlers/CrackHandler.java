@@ -13,7 +13,7 @@ import ee.ttu.http.handlers.model.GetHandler;
 import ee.ttu.http.service.NetworkCache;
 import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.http.service.TextReader;
-import ee.ttu.http.service.letterCombinations;
+import ee.ttu.http.service.LetterCombination;
 import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
 
@@ -35,7 +35,7 @@ public class CrackHandler extends GetHandler{
 		Log.debug("Hash: " + ResourceHolder.getHashToCrack());
 		
 		//Old way: arvutame kohe. Correct way: jagame tükkideks laiali, allpool
-		//String result = MD5Cracker.calculator(hashToCrack); 
+		String result = MD5Cracker.calculator(ResourceHolder.getHashToCrack()); 
 
 		ResourceHolder.setId("laksfwe34");
 		
@@ -61,7 +61,7 @@ public class CrackHandler extends GetHandler{
 
 		//Waiting
 		try {
-		    Thread.sleep(2000); //1000 = 1 sec. Testimise jaoks lühike aeg. Reaalsuses oleks pikem aeg.
+		    Thread.sleep(1000); //1000 = 1 sec. Testimise jaoks lühike aeg. Reaalsuses oleks pikem aeg.
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}
@@ -82,14 +82,27 @@ public class CrackHandler extends GetHandler{
         for (char c: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray()) {
         	list.add(Character.toString(c));
         }
+        
+        //Generate välja kutsutud! Muutujad on, str: 88, pos: 60, length: 0, toCrack: dd97813dd40be87559aaefed642c3fbb
+        MD5Cracker whipcracka = new MD5Cracker();
+        whipcracka.generate("88", 60, 0, "dd97813dd40be87559aaefed642c3fbb");
+        
 		
-        letterCombinations test = new letterCombinations();
-        letterCombinations test2 = new letterCombinations();
-		System.out.println("WORD IS " + test.generateCombinations(4, list, 1));
+        LetterCombination test = new LetterCombination();
+        String findWord;
+        findWord = test.findWord(2, list, "ig");
+        //System.out.println("Leitud sõna on: " + findWord);
+        
+        LetterCombination test2 = new LetterCombination();
+        int nr = 175;
+        int nr2 = 10000;
+		System.out.println("At " + nr + " is " + test2.generateCombinations(4, list, nr));
 		
-		System.out.println("WORD IS " + test2.generateCombinations(4, list, 5000));
+		LetterCombination test3 = new LetterCombination();
+		System.out.println("At " + nr2 + " is " + test3.generateCombinations(4, list, nr2));
+		
 		//TODO hetkel leiame ise kõik vahemikud generateCombinationiga. Meie peaksime andma pigem numbrid ja iga arvuti kasutab
-		//				ise seda letterCombinatsionsit, et leida enda vahemik. Seejärel vaatab, kas lahendus kuulub vahemikku - nt hetkel a - arN (1-5000)
+		//				ise seda letterCombinatsionsit, et leida enda vahemik. Seejärel vaatab, kas lahendus kuulub vahemikku, nt hetkel a - arN (1-5000)
 		
 		requestbody = "{\"ip\":\""  + NetworkCache.getServerIP() + "\",\"port\":\"" + NetworkCache.getServerPort()
 			+ "\",\"id\":\"" + ResourceHolder.getId() + "\",\"md5\":" +ResourceHolder.getHashToCrack() + "\"m\"ranges\":" +  "}";
