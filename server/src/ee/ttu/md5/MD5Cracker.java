@@ -25,15 +25,23 @@ public class MD5Cracker {
 	    public String generate(String str, int pos, int length, String toCrack) {
 	        if (length == 0) {
 	            try {
-					MessageDigest m = MessageDigest.getInstance("MD5");
-					//wildcard = "p" + str + "s";
+	            	// teeme md5 instance
+					MessageDigest m = MessageDigest.getInstance("MD5");;
+					
+					// saame stringi baitid
 					m.update(str.getBytes());
-					//m.update(wildcard.getBytes());
+			
+					//stringi baiditele teeme md5 kama
 					byte[] b = m.digest();
+					
+					// hash on siis hetke stringi md5, see alumine kama siin
 					hash = javax.xml.bind.DatatypeConverter.printHexBinary(b);
+					//teeme väiketähtedeks sest ta tuleb alati suurte tähetena välja
 					hash.toLowerCase();
-					//strTemp = wildcard;
+					//temporary string, lihtsalt et oleks väline muutuja
 					strTemp = str;
+					
+					//pmst prindib stringi välja, a...z, aa...zz, jne...
 					//System.out.println(str);
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
@@ -42,10 +50,14 @@ public class MD5Cracker {
 	            if (pos != 0) {
 	                pos = 0;
 	            }
+	            //charseti pikkuseni teeme seda
 	            for (int i = pos; i < charset.length; i++) {
+	            	//teeme hashi lowercasiks double sest millegipärast ta lükkab caps locki uuesti tagasi, kui see võrnde
+	            	//crackiga siis tagastame selle stringi, mis see värk on
 	                if(hash.toLowerCase().equals(toCrack)) {
 	                	return strTemp;
 	                } else {
+	                //kui ei leidnud, siis lihtsalt lähme edasi
 	                code = generate(str + charset[i], i, length-1,toCrack);
 	                }
 	            }
@@ -59,14 +71,20 @@ public class MD5Cracker {
 	    	double duration;
 	    	System.out.println("MD5 Cracker");
 	    	System.out.println("Cracking in progress...");
+	    	//uus instance
 	        MD5Cracker bruteforce = new MD5Cracker();
+	        
+	        //pikkus on siis ette antud, nt meil min 1 ja max 7, teeb kuni selle pikkuseni
 	        for (int length = bruteforce.min; length < bruteforce.max; length++) { // Change bruteforce.min and bruteforce.max for number of characters to bruteforce. 
 	            bruteforce.generate("", 0, length-1, toCrack); //prepend_string, pos, length 
 	            duration = (System.currentTimeMillis() - startTime) / 1000;
+	            
+	            //kui leiab võrdse, tagastab selle
 	            if(hash.toLowerCase().equals(toCrack)) {
 	            	System.out.println("Cracked it ## " + strTemp + " ## Time taken: " + duration + " seconds");
 	            	return strTemp;
 	            }
+	            //else mine edasi, iga järgmine tähemärkide pikkus prindi välja
 	            System.out.println("String length is: " + (strTemp.length() + 1) +" chars. Time taken: " + duration + " seconds"); 
 	        }
 			return null;
