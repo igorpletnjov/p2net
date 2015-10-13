@@ -39,7 +39,7 @@ public class CrackHandler extends GetHandler{
 
 		ResourceHolder.setId("laksfwe34");
 		
-		Map<String, String> parameters = new HashMap();
+		Map<String, String> parameters = new HashMap<>();
 		parameters.put("sendip", NetworkCache.getServerIP());
 		parameters.put("sendport", String.valueOf(NetworkCache.getServerPort()));
 		parameters.put("ttl", "5");
@@ -89,8 +89,7 @@ public class CrackHandler extends GetHandler{
         
 		
         LetterCombination test = new LetterCombination();
-        String findWord;
-        findWord = test.findWord(2, list, "ig");
+        String findWord = test.findWord(2, list, "ig");
         //System.out.println("Leitud sõna on: " + findWord);
         
         LetterCombination test2 = new LetterCombination();

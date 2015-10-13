@@ -3,6 +3,10 @@ package ee.ttu.md5;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
 import ee.ttu.util.Log;
 
 public class MD5Cracker {
@@ -26,31 +30,27 @@ public class MD5Cracker {
 	    	System.out.println("Generate välja kutsutud! Muutujad on, str: " + str + ", pos: " + pos + ", length: "
 	    			+ length + ", toCrack: " + toCrack);
 	        if (length == 0) {
-	            try {
-	            	// teeme md5 instance
-					MessageDigest m = MessageDigest.getInstance("MD5");;
-					System.out.println("Teen md5 instance!!");
-					
-					// saame stringi baitid
-					m.update(str.getBytes());
-			
-					//stringi baiditele teeme md5 kama
-					byte[] b = m.digest();
-					
-					System.out.println("Loon hashi!!");
-					// hash on siis hetke stringi md5, see alumine kama siin
-					hash = javax.xml.bind.DatatypeConverter.printHexBinary(b);
-					//teeme väiketähtedeks sest ta tuleb alati suurte tähetena välja
-					hash.toLowerCase();
-					//temporary string, lihtsalt et oleks väline muutuja
-					strTemp = str;
-					
-					System.out.println("PRINDIN STR!!");
-					//pmst prindib stringi välja, a...z, aa...zz, jne...
-					System.out.println(str);
-				} catch (NoSuchAlgorithmException e) {
-					e.printStackTrace();
-				}
+            	// teeme md5 instance
+				MessageDigest m = DigestUtils.getMd5Digest();
+				System.out.println("Teen md5 instance!!");
+				
+				// saame stringi baitid
+				m.update( str.getBytes() );
+		
+				//stringi baiditele teeme md5 kama
+				byte[] b = m.digest();
+				
+				System.out.println("Loon hashi!!");
+				// hash on siis hetke stringi md5, see alumine kama siin
+				hash = DatatypeConverter.printHexBinary(b);
+				//teeme väiketähtedeks sest ta tuleb alati suurte tähetena välja
+				hash.toLowerCase();
+				//temporary string, lihtsalt et oleks väline muutuja
+				strTemp = str;
+				
+				System.out.println("PRINDIN STR!!");
+				//pmst prindib stringi välja, a...z, aa...zz, jne...
+				System.out.println(str);
 	        } else {
 	            if (pos != 0) {
 	                pos = 0;

@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class NetworkCache {
 	public static HashSet<String> readyMachines = new HashSet<>(); //Public?
-	static List<String> allMachines = new ArrayList<>(); 
+	static List<String> knownMachines = new ArrayList<>(); 
 	static String serverIP;
 	static int serverPort;
 	
@@ -32,7 +32,7 @@ public class NetworkCache {
 		return readyMachines;
 	}
 	public static List<String> getAllMachines() {
-		return allMachines;
+		return knownMachines;
 	}
 	
 	Boolean originalSender = false;

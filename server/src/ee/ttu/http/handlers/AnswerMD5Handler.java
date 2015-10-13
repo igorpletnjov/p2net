@@ -10,6 +10,8 @@ public class AnswerMD5Handler extends PostHandler{
 	public void handle(HttpExchange httpExchange) throws IOException {
 		super.handle(httpExchange);
 		
+		// siin polegi suurt midagi teha ju lol
+		
 		/*
 			{"ip": "55.66.77.88", 
 				"port": "6788",

@@ -3,6 +3,7 @@ package ee.ttu;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -31,21 +32,21 @@ public class ServerMain {
 	public static void main(String[] args) throws Exception {
 		
 		HttpServer server = null;
-		NetworkCache.setServerIP("localhost");
-		NetworkCache.setServerPort(1215);
+		NetworkCache.setServerIP("127.0.0.1"); // Hardcoded to test on single machine
 		//For testing: remove machines.txt, activate 1216, 1217,1218, add machines.txt, activate 1215 - doesnt actually work :(
 		
 		try {
-			if (args.length > 1)
+			if (args.length >= 1)
 				server = HttpServer.create(new InetSocketAddress( Integer.parseInt(args[0]) ), 0);
 			else
 				server = HttpServer.create(new InetSocketAddress( NetworkCache.getServerPort() ), 0);
 		} catch (NumberFormatException nfex) {
-			Log.error("Invalid port :" + args[0]);
+			Log.error("Invalid port ->" + args[0]);
 			server = HttpServer.create(new InetSocketAddress( NetworkCache.getServerPort() ), 0);
 		}
 		
 		Log.info("Started server on port " + server.getAddress().getPort());
+		NetworkCache.setServerPort( server.getAddress().getPort() );
 		
 		//Read in the machines
 		TextReader file = new TextReader();
@@ -60,7 +61,7 @@ public class ServerMain {
 		ResourceHolder.getContextList().add( server.createContext( "/answermd5", new AnswerMD5Handler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/crack", new CrackHandler() ) ); 
 
-		server.setExecutor(null);
+		server.setExecutor( Executors.newCachedThreadPool() );
 		server.start();
 
 	}

@@ -35,10 +35,10 @@ public class TextReader {
 	        if (text != ""){
 	        	 for (int i = 0; i < machinesSplit.length; i = i+2){
 	 	        	//Add together the ip and port
-	 	        	NetworkCache.allMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
+	 	        	NetworkCache.knownMachines.add(machinesSplit[i] + ":" + machinesSplit[i+1]); 
 	 	        }
 	 	        
-	 	        Log.info("List of machines: " + NetworkCache.allMachines);
+	 	        Log.info("List of machines: " + NetworkCache.knownMachines);
 	        }
 	       
 	        bufferedReader.close();

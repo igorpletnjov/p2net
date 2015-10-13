@@ -1,6 +1,5 @@
 package ee.ttu.http.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LetterCombination {
