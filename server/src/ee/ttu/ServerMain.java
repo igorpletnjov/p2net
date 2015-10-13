@@ -1,6 +1,10 @@
 package ee.ttu;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -18,6 +22,8 @@ import ee.ttu.http.handlers.SendHandler;
 import ee.ttu.http.service.NetworkCache;
 import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.http.service.TextReader;
+import ee.ttu.http.service.WebReader;
+import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
 
 /*
@@ -30,9 +36,9 @@ import ee.ttu.util.Log;
 
 public class ServerMain {
 	public static void main(String[] args) throws Exception {
-		
 		HttpServer server = null;
 		NetworkCache.setServerIP("127.0.0.1"); // Hardcoded to test on single machine
+		NetworkCache.setServerPort(1215);
 		//For testing: remove machines.txt, activate 1216, 1217,1218, add machines.txt, activate 1215 - doesnt actually work :(
 		
 		try {
@@ -48,10 +54,14 @@ public class ServerMain {
 		Log.info("Started server on port " + server.getAddress().getPort());
 		NetworkCache.setServerPort( server.getAddress().getPort() );
 		
-		//Read in the machines
+		//Read in the machines from txt
 		TextReader file = new TextReader();
 		file.readText("machines.txt");
-
+		
+		//Read in the machines from website
+		WebReader web = new WebReader();
+		web.reader("http://dijkstra.cs.ttu.ee/~Silver.Saul/P2MD5.txt");
+			
 		ResourceHolder.getContextList().add( server.createContext( "/index", new IndexHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/json", new JsonHandler() ) );
 		ResourceHolder.getContextList().add( server.createContext( "/send", new SendHandler() ) );
