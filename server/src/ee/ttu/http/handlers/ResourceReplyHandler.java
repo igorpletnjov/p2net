@@ -24,9 +24,8 @@ public class ResourceReplyHandler extends PostHandler {
 		
 		JSONObject postedDataJSON = new JSONObject(postedData); //Converts postedData string to jsonobject
 		
-		JsonParser2 parser= new JsonParser2();
-		Map<String,Object> dataMap = new HashMap();
-		dataMap = parser.jsonToMap(postedDataJSON); //JsonParser2 parses the jsonobject to map
+		Map<String,Object> dataMap = new HashMap<>();
+		dataMap = JsonParser2.jsonToMap(postedDataJSON); //JsonParser2 parses the jsonobject to map
 		
 		Log.info("dataMap: " + dataMap.toString());
 		//Log.info("mapTest: " + dataMap.get("ip"));
