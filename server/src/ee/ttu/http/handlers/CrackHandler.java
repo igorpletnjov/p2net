@@ -58,7 +58,7 @@ public class CrackHandler extends GetHandler{
 
 		//Waiting
 		try {
-		    Thread.sleep(1000); //1000 = 1 sec. Testimise jaoks lühike aeg. Reaalsuses oleks pikem aeg.
+		    Thread.sleep(10000); //1000 = 1 sec. Testimise jaoks lühike aeg. Reaalsuses oleks pikem aeg.
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}
@@ -94,8 +94,8 @@ public class CrackHandler extends GetHandler{
         //System.out.println("Leitud sõna on: " + findWord);
         
         LetterCombination test2 = new LetterCombination();
-        int nr = 175;
-        int nr2 = 10000;
+        int nr = 10000;
+        int nr2 = 100000;
 		System.out.println("TEST: At " + nr + " is " + test2.generateCombinations(4, list, nr));
 		
 		LetterCombination test3 = new LetterCombination();
@@ -118,7 +118,7 @@ public class CrackHandler extends GetHandler{
 
 		//For testing purposes
 		StringBuffer response = new StringBuffer();
-		response.append("<html><body> Hash: " + ResourceHolder.getHashToCrack() + " <br> Answer: " + "SIIA TULEB TULEMUS" + "<br><br> Machines: ");
+		response.append("<html><body> Hash: " + ResourceHolder.getHashToCrack() + " <br> Answer: " + ResourceHolder.getResultString() + "<br><br> Machines: ");
 		for (int i = 0; i < NetworkCache.getAllMachines().size(); i++){
 			response.append("<br>" + NetworkCache.getAllMachines().get(i));
 		}

@@ -10,6 +10,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import ee.ttu.http.handlers.model.PostHandler;
 import ee.ttu.http.service.JsonParser2;
+import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.util.Log;
 
 //Rehkenduse tulemuse tagastamine algsele päringu saatjale
@@ -44,6 +45,8 @@ public class AnswerMD5Handler extends PostHandler{
 			Log.error("Result status from " + dataMap.get("ip") + ":" + dataMap.get("port") + " was null. Resultstring -> " + dataMap.get("resultstring"));
 			sendEmptyResponse(400, httpExchange);
 		}
+		
+		ResourceHolder.setResultString((String)dataMap.get("resultstring"));
 		
 		sendResponse("0", httpExchange);
 		/*

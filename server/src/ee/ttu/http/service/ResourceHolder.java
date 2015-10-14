@@ -11,7 +11,16 @@ public class ResourceHolder {
 	
 	static String id;
 	static String hashToCrack;
+	static String resultString;
 	
+	public static String getResultString() {
+		return resultString;
+	}
+
+	public static void setResultString(String resultString) {
+		ResourceHolder.resultString = resultString;
+	}
+
 	public static String getHashToCrack() {
 		return hashToCrack;
 	}

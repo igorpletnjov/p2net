@@ -10,6 +10,7 @@ import com.sun.net.httpserver.HttpExchange;
 import ee.ttu.http.handlers.model.PostHandler;
 import ee.ttu.http.service.JsonParser2;
 import ee.ttu.http.service.NetworkCache;
+import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
 
@@ -47,6 +48,8 @@ public class CheckMD5Handler extends PostHandler{
 		String requestbody = "{\"ip\":\""  + NetworkCache.getServerIP() + "\",\"port\":\"" + NetworkCache.getServerPort()
 		+	"\",\"id\":\"" + id + "\",\"md5\":\"" + md5 + "\",\"result\":" + result + ",\"resultstring\":" + answer +  "}";
 		Log.info("RequestBody: " + requestbody);
+		
+		ResourceHolder.setResultString(answer);
 	
 		Map<String, String> requestheader = new HashMap<String, String>();
 		requestheader.put("Content-Type", "application/json");
