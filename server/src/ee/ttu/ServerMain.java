@@ -1,12 +1,6 @@
 package ee.ttu;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 
 import com.sun.net.httpserver.HttpServer;
@@ -23,7 +17,6 @@ import ee.ttu.http.service.NetworkCache;
 import ee.ttu.http.service.ResourceHolder;
 import ee.ttu.http.service.TextReader;
 import ee.ttu.http.service.WebReader;
-import ee.ttu.md5.MD5Cracker;
 import ee.ttu.util.Log;
 
 /*
@@ -35,20 +28,21 @@ import ee.ttu.util.Log;
  */
 
 public class ServerMain {
+	
+	final static int defaultPort = 1215;
 	public static void main(String[] args) throws Exception {
 		HttpServer server = null;
 		NetworkCache.setServerIP("127.0.0.1"); // Hardcoded to test on single machine
-		NetworkCache.setServerPort(1215);
 		//For testing: remove machines.txt, activate 1216, 1217,1218, add machines.txt, activate 1215 - doesnt actually work :(
 		
 		try {
 			if (args.length >= 1)
 				server = HttpServer.create(new InetSocketAddress( Integer.parseInt(args[0]) ), 0);
 			else
-				server = HttpServer.create(new InetSocketAddress( NetworkCache.getServerPort() ), 0);
+				server = HttpServer.create(new InetSocketAddress( defaultPort ), 0);
 		} catch (NumberFormatException nfex) {
 			Log.error("Invalid port ->" + args[0]);
-			server = HttpServer.create(new InetSocketAddress( NetworkCache.getServerPort() ), 0);
+			server = HttpServer.create(new InetSocketAddress( defaultPort ), 0);
 		}
 		
 		Log.info("Started server on port " + server.getAddress().getPort());

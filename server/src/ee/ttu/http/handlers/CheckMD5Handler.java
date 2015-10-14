@@ -25,9 +25,7 @@ public class CheckMD5Handler extends PostHandler{
 		
 		JSONObject postedDataJSON = new JSONObject(postedData); //Converts postedData string to jsonobject
 		
-		JsonParser2 parser= new JsonParser2();
-		Map<String,Object> dataMap = new HashMap();
-		dataMap = parser.jsonToMap(postedDataJSON); //JsonParser2 parses the jsonobject to map
+		Map<String,Object> dataMap = JsonParser2.jsonToMap(postedDataJSON); //JsonParser2 parses the jsonobject to map
 		
 		Log.info("dataMap: " + dataMap.toString());
 		//Log.info("mapTest: " + dataMap.get("ip"));
@@ -45,8 +43,15 @@ public class CheckMD5Handler extends PostHandler{
 			result = 0;
 		}
 		
-		String requestbody = "{\"ip\":\""  + NetworkCache.getServerIP() + "\",\"port\":\"" + NetworkCache.getServerPort()
-		+	"\",\"id\":\"" + id + "\",\"md5\":\"" + md5 + "\",\"result\":" + result + ",\"resultstring\":" + answer +  "}";
+		JSONObject answerObject = new JSONObject();
+		answerObject.put("ip", NetworkCache.getServerIP());
+		answerObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
+		answerObject.put("id", id);
+		answerObject.put("md5", md5);
+		answerObject.put("result", String.valueOf( result ));
+		answerObject.put("resultstring", answer);
+		
+		String requestbody = answerObject.toString();
 		Log.info("RequestBody: " + requestbody);
 		
 		ResourceHolder.setResultString(answer);

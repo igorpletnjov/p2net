@@ -3,6 +3,7 @@ package ee.ttu.http.handlers.model;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
@@ -23,8 +24,10 @@ public abstract class BaseHandler implements HttpHandler {
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		Log.debug("Got new request: " + getRequestInfo(httpExchange) );
-		Log.debug("Request headers: " + getRequestHeaders(httpExchange) );
-		Log.debug("Request body: " + getRequestBody(httpExchange) );
+		//Log.debug("Request headers: " + getRequestHeaders(httpExchange) ); IRRELEVANT
+		if ( getRequestBody(httpExchange) != null && !"".equals(getRequestBody(httpExchange))) {
+			Log.debug("Request body: " + getRequestBody(httpExchange) );
+		}
 	}
 	
 	// When encountering errors/exceptions
@@ -99,24 +102,26 @@ public abstract class BaseHandler implements HttpHandler {
 	
 	// Sending to other destinations
 	
-	public String sendGET( Map<String, String> requestParams, String URL ) {
+	public String sendGET( Map<String, String> requestParams, String URL ) throws IOException {
 		return send("GET", null, requestParams, null, URL);
 	}
 	
-	public String sendPOST( String requestBody, Map<String, String> requestHeaders, String URL ) {
+	public String sendPOST( String requestBody, Map<String, String> requestHeaders, String URL ) throws IOException {
 		return send("POST", requestBody, null, requestHeaders, URL);
 	}
 	
-	String send(String requestMethod, String requestBody, Map<String, String> requestParams, Map<String, String> requestHeaders, String plainURL ) {
+	String send(String requestMethod, String requestBody, Map<String, String> requestParams, Map<String, String> requestHeaders, String plainURL ) throws IOException {
 		URLConnection connection = null;
 		BufferedReader br = null;
 		plainURL = "http://" + plainURL;
+		InputStream input = null;
+		InputStreamReader inputReader = null;
 		
 		try {
 			if ( requestParams != null ) {
 				ParamsHelper paramsHelper = new ParamsHelper();
 				plainURL = ( plainURL += paramsHelper.create( requestParams ) );
-				Log.debug("final URL -> " + plainURL);
+				//Log.debug("final URL -> " + plainURL);
 			}
 			
 			URL url = new URL( plainURL );
@@ -134,27 +139,33 @@ public abstract class BaseHandler implements HttpHandler {
 			}
 			
 			if ( requestBody != null ) {
-				try ( OutputStream output = connection.getOutputStream() ) {
+				OutputStream output = null;
+				try {
+					output = connection.getOutputStream();
 				    output.write( requestBody.getBytes() );
 				    Log.debug("Successfully wrote request body to output");
+				} finally {
+					if ( output != null)
+						output.close();
 				}
 			}
 			
-			connection.setUseCaches(false);
+			//connection.setUseCaches(false);
 			//connection.connect();
-			
-			br = new BufferedReader( new InputStreamReader( connection.getInputStream() ));
+			input = connection.getInputStream();
+			inputReader = new InputStreamReader(input);
+			br = new BufferedReader( inputReader );
 			StringBuffer response = new StringBuffer();
 			String line = null;
 			while (true) {
 				line = br.readLine();
-				Log.debug("Got line : " + line);
-				if (line != null)
+				if (line != null) {
+					//Log.debug("Got line : " + line);
 					response.append(line);
+				}
 				else break;
 			}
 			Log.info( "Got response : " + response.toString() );
-			if (br != null) br.close();
 			
 			// Everything went well, got a response
 			return response.toString();
@@ -163,6 +174,12 @@ public abstract class BaseHandler implements HttpHandler {
 			
 			Log.error( ex.getMessage() );
 			return null;
+		} finally {
+			if (br != null) br.close();
+			if ( inputReader != null ) inputReader.close();
+			if ( input != null ) input.close();
+			
+			
 		}
 	}
 

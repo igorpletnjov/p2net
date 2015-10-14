@@ -95,14 +95,14 @@ public class ResourceHandler extends GetHandler {
 				requestheader.put("Content-Type", "application/json");
 				sendPOST(requestbody, requestheader, sendip + ":" + sendport + "/resourcereply");
 			}
+			
+			sendResponse("0", httpExchange); // "GET-päringu vastuseks on õnnestunud päringu korral number 0"
 
 			
 		} catch (Exception ex) {
 			Log.error("Error parsing parameters ->" + ex.getMessage());
 			sendEmptyResponse(500, httpExchange);
 		}
-		
-		sendResponse("0", httpExchange); // "GET-päringu vastuseks on õnnestunud päringu korral number 0"
 		
 		//For testing purposes
 		StringBuffer response = new StringBuffer();

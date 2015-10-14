@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
+
 import com.sun.net.httpserver.HttpExchange;
 
 import ee.ttu.ServerMain;
@@ -104,8 +106,13 @@ public class CrackHandler extends GetHandler{
 		//TODO hetkel leiame ise kõik vahemikud generateCombinationiga. Meie peaksime andma pigem numbrid ja iga arvuti kasutab
 		//				ise seda letterCombinatsionsit, et leida enda vahemik. Seejärel vaatab, kas lahendus kuulub vahemikku, nt hetkel a - arN (1-5000)
 		
-		requestbody = "{\"ip\":\""  + NetworkCache.getServerIP() + "\",\"port\":\"" + NetworkCache.getServerPort()
-			+ "\",\"id\":\"sdfgsd45\",\"md5\":" +ResourceHolder.getHashToCrack() + "\"}";
+		JSONObject checkObject = new JSONObject();
+		checkObject.put("ip", NetworkCache.getServerIP());
+		checkObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
+		checkObject.put("id", "sdfgsd45");
+		checkObject.put("md5", ResourceHolder.getHashToCrack());
+		
+		requestbody = checkObject.toString();
 		
 		Log.info("RequestBody for checkmd5: " + requestbody);
 		
