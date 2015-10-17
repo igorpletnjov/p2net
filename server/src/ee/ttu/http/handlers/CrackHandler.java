@@ -64,37 +64,26 @@ public class CrackHandler extends GetHandler{
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}
-		
-		//Send resourcereply to the original computer
-		String requestbody;
-		ResourceHolder.setId("fsafasrwe");
-	
-		
-		//TODO MAKE PROPER REQUEST
-		//Total combinations (5 char): 931151402 - gotta divide it by the nr of computers
-		//Siia tuleb 931151402 jagatis nt 931151402  : 3 = 232787852 IMPORTANT, komakohad tuleb õigseti panna
-		//TODO Ümardamine korrektselt
-		//esimene arvuti 0-310383800, teine 310383800 - (310383800*2) ja kolmas (310383800*2) - (310383800*3)
-		//kasutame letterCombinatsionsit leidmiseks
-		
-		List<String> list = new ArrayList<>();
-        for (char c: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray()) {
-        	list.add(Character.toString(c));
-        }
+
         
-        
-        System.out.println("----------------------------- ");
-        
+        //TEST: Kutsub kohe ise crackeri välja
         //Generate välja kutsutud! Muutujad on, str: 88, pos: 60, length: 0, toCrack: dd97813dd40be87559aaefed642c3fbb
         //MD5Cracker cracker = new MD5Cracker();
         // cracker.generate("98", 60, 0, "dd97813dd40be87559aaefed642c3fbb");
+        //System.out.println("----------------------------- ");
         
-        System.out.println("----------------------------- ");
+		//TEST: Otsib teatud kombinatsiooni numbri 
+		/*
+    	List<String> list = new ArrayList<>();
+        for (char c: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray()) {
+        	list.add(Character.toString(c));
+        }
         
         LetterCombination test = new LetterCombination();
         String findWord = test.findWord(2, list, "ig");
         //System.out.println("Leitud sõna on: " + findWord);
         
+        //TEST: Otsib kombinatsioonid vastavalt numbritele
         LetterCombination test2 = new LetterCombination();
         int nr = 10000;
         int nr2 = 100000;
@@ -102,9 +91,34 @@ public class CrackHandler extends GetHandler{
 		
 		LetterCombination test3 = new LetterCombination();
 		System.out.println("TEST: At " + nr2 + " is " + test3.generateCombinations(4, list, nr2));
+		*/
 		
 		//TODO hetkel leiame ise kõik vahemikud generateCombinationiga. Meie peaksime andma pigem numbrid ja iga arvuti kasutab
 		//				ise seda letterCombinatsionsit, et leida enda vahemik. Seejärel vaatab, kas lahendus kuulub vahemikku, nt hetkel a - arN (1-5000)
+		
+		/* TODO - Sten
+		 * Selle klassi käivitab peaarvuti, mis saadab tükke välja teistele arvutitele
+		 * Tükkide välja saatmine erinevatele arvutitele toimub siin all
+		 *	for loop käib läbi kõik kõik getReadyMachines()'id ja saadab neile POSTi
+		 * Arvutite arv, mida me saame kasutada on: NetworkCache.getReadyMachines().size()
+		 * checkObject.put paneb requestbody'sse hetkel meil kõik info json kujul - sinul on tõenäoliselt
+		 * 				vaja teha mingisugune checkObject.put("range", tükk); loopi sisse (ja siis äkki sinna lükata ka see requestbody = checkObject.toString(); ?)
+		 * 				Ma ei saanud 100% su lahendusest aru, kuidas sa neid vahemikke tükeldad,
+		 * 				aga kui sa saad nt enne seda for loopi mingid vahemikud kätte ja array'sse pandud, siis saab for loopi ümber teha i++ variandiks, 
+		 *				kus i võtab nii masina kui ka range tüki array'st (arvestades, et need on ühe pikad)?
+		 *	Teine võimalus on teha see arvutus praeguse loopi sees ja talletada ja igakord kui uuesti loop läheb käima, siis võtab kuidagi järgmise tüki ja annab uuele masinale.
+		 *
+		 *	Kui sa mitu serverid ei taha käivitada, siis võid lisada ise siin ajutiselt arvuteid getReadyMachine listi
+		 * 	nt NetworkCache.getAllMachines().add("localhost:2000");	
+		 * Kasuta logimist või syso, et näha kas saadab jupid õigesti välja, kui on palju arvuteid
+		 * 
+		 * Edasi mine CheckMD5Handlerisse, sest seal tuleb need tükid vastu võtta
+		 */
+
+		//Send resourcereply to the original computer
+		String requestbody;
+        
+        System.out.println("----------------------------- ");
 		
 		JSONObject checkObject = new JSONObject();
 		checkObject.put("ip", NetworkCache.getServerIP());
@@ -123,7 +137,7 @@ public class CrackHandler extends GetHandler{
 		}
 		
 
-		//For testing purposes
+		//For testing purposes - shows info in html 
 		StringBuffer response = new StringBuffer();
 		response.append("<html><body> Hash: " + ResourceHolder.getHashToCrack() + " <br> Answer: " + ResourceHolder.getResultString() + "<br><br> Machines: ");
 		for (int i = 0; i < NetworkCache.getAllMachines().size(); i++){

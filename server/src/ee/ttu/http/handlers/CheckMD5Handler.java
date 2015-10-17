@@ -35,10 +35,25 @@ public class CheckMD5Handler extends PostHandler{
 		String id = (String) dataMap.get("id");
 		String md5 = (String) dataMap.get("md5");
 		
+		/* TODO - Sten
+		 * Selle klassi käivitab ühte tükki tegev arvuti
+		 * Seega ta peaks lugema sisse endale antud tüki - seda teeb ta üleval,
+		 * 				CrackHandleris saadetud POST'ist väljalugedes
+		 * 				String range= (String) dataMap.get("range"); vms
+		 * 
+		 * Hetkel kutsub välja ta String answer = MD5Cracker.calculator(md5);
+		 * 				ehk ta teeb terve hash'iga praegu, mis on vale
+		 * 				Ta peaks andma tõenäoliselt nii md5, kui ka siis oma selle range'i, 
+		 * 				seega pead MD5Crackerit sedasi muutma, et võtaks 2 sisendit
+		 * 
+		 * Vastuse saamise puhul peaks ta saatma vastuse tagasi, mida ta teeb all pool
+		 * Võib-olla peaks ta kuidagi ka aega võtma, sest Tanelil sedasi kirjas - "result: mis sai (leidsin stringi: 0, ei leidnud stringi: 1, ei jõudnud rehkendada: 2)"
+		 */
+		
 		Log.info("Original ip: " + originalIP + ", Original port: " + originalPort + ", id: " + id + ", md5: " + md5);
 		
 		int result = 1;
-		String answer = MD5Cracker.calculator(md5);
+		String answer = MD5Cracker.calculator(md5); //See on vale
 		if (answer != null){
 			result = 0;
 		}
