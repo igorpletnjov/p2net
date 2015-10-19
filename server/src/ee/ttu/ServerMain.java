@@ -29,7 +29,7 @@ import ee.ttu.util.Log;
 
 public class ServerMain {
 	
-	final static int defaultPort = 1215;
+	final static int defaultPort = 1217;
 	public static void main(String[] args) throws Exception {
 		HttpServer server = null;
 		NetworkCache.setServerIP("127.0.0.1"); // Hardcoded to test on single machine
@@ -51,6 +51,9 @@ public class ServerMain {
 		//Read in the machines from txt
 		TextReader file = new TextReader();
 		file.readText("machines.txt");
+		//Log.debug("size: "  + CrackHandler.tempRange);
+		
+		
 		
 		//Read in the machines from website
 		WebReader web = new WebReader();

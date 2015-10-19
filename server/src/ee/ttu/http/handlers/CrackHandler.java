@@ -21,6 +21,10 @@ import ee.ttu.util.Log;
 
 //This class starts everything
 public class CrackHandler extends GetHandler{
+	public static int tempRange;
+	public static int range;
+	public static int i;
+	public static int j;
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		super.handle(httpExchange);
@@ -60,7 +64,7 @@ public class CrackHandler extends GetHandler{
 
 		//Waiting
 		try {
-		    Thread.sleep(10000); //1000 = 1 sec. Testimise jaoks lühike aeg. Reaalsuses oleks pikem aeg.
+		    Thread.sleep(1); //1000 = 1 sec. Testimise jaoks lühike aeg. Reaalsuses oleks pikem aeg.
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}
@@ -93,6 +97,74 @@ public class CrackHandler extends GetHandler{
 		System.out.println("TEST: At " + nr2 + " is " + test3.generateCombinations(4, list, nr2));
 		*/
 		
+		
+		/*int tempRange;
+		int range;
+		int j;*/
+		//cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
+		/*if(NetworkCache.getReadyMachines().size() <= 0) {
+			tempRange = 62;
+		} else {
+			tempRange = 62 / NetworkCache.getReadyMachines().size();
+		}*/
+		/*tempRange = 62 / NetworkCache.getReadyMachines().size();
+		range = 62;
+		String tempSet ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		for(String computer: NetworkCache.getReadyMachines()) {
+			MD5Cracker cracker = new MD5Cracker();
+			while(range > 0) {
+				int j = 62 - range;
+				for(i = 62 - range; i <= tempRange + j; i++) {
+					//Log.info("char " +tempSet.charAt(i));
+					//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+					//cracker.generate(tempSet.charAt(i) + "", i, 0, "b764be88d07a84126fd57a9c4071fed8");
+					cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
+					
+				}
+				//cracker.generate(MD5Cracker.tempSet.charAt(MD5Cracker.k) + "", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+				//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+				if( range - tempRange > 0 && range - ( 2 * tempRange) < 0) {
+					tempRange = range;
+				}
+				range = range - tempRange;
+			}
+		}
+		System.out.println(range);
+		*/
+		/*tempRange = 62 / NetworkCache.getReadyMachines().size();
+		range = 62;
+		MD5Cracker cracker = new MD5Cracker();
+		for(int i = 0; i < NetworkCache.getReadyMachines().size(); i++) {
+			while(range > 0) {
+				j = 62 - range;
+				if(range - tempRange > 0 && range - (2 * tempRange ) < 0) {
+					tempRange = range;
+				}
+				range = range - tempRange;
+			}
+			cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
+		}*/
+		//MD5Cracker cracker = new MD5Cracker();
+		//for(String computer: NetworkCache.getReadyMachines()) {
+
+			for(int i = 0; i < NetworkCache.getReadyMachines().size();i++) {
+				MD5Cracker cracker = new MD5Cracker();
+				while(MD5Cracker.range > 0) {
+					cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+					MD5Cracker.j = 62 - range;
+					if(MD5Cracker.range - MD5Cracker.tempRange > 0 && MD5Cracker.range - (2 * MD5Cracker.tempRange) > 0 ) {
+						MD5Cracker.tempRange = MD5Cracker.range;
+					}
+					range = range - tempRange;
+				}
+			}
+				//cracker.generate("", 60, 0, "b764be88d07a84126fd57a9c4071fed8");
+			//}
+		
+		
+		
+		
+		
 		//TODO hetkel leiame ise kõik vahemikud generateCombinationiga. Meie peaksime andma pigem numbrid ja iga arvuti kasutab
 		//				ise seda letterCombinatsionsit, et leida enda vahemik. Seejärel vaatab, kas lahendus kuulub vahemikku, nt hetkel a - arN (1-5000)
 		
@@ -119,7 +191,8 @@ public class CrackHandler extends GetHandler{
 		String requestbody;
         
         System.out.println("----------------------------- ");
-		
+        //Log.debug("suurus:" + NetworkCache.getReadyMachines().size());
+        //Log.debug("suurus:" + tempRange);
 		JSONObject checkObject = new JSONObject();
 		checkObject.put("ip", NetworkCache.getServerIP());
 		checkObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
