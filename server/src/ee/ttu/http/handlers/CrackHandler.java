@@ -25,6 +25,7 @@ public class CrackHandler extends GetHandler{
 	public static int range;
 	public static int i;
 	public static int j;
+	public static String answerTest;
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		super.handle(httpExchange);
@@ -147,20 +148,21 @@ public class CrackHandler extends GetHandler{
 		//MD5Cracker cracker = new MD5Cracker();
 		//for(String computer: NetworkCache.getReadyMachines()) {
 
-			for(int i = 0; i < NetworkCache.getReadyMachines().size();i++) {
-				MD5Cracker cracker = new MD5Cracker();
+			//for(int i = 0; i < NetworkCache.getReadyMachines().size();i++) {
+
+			//}
+				//cracker.generate("", 60, 0, "b764be88d07a84126fd57a9c4071fed8");
+			//}
+			for(int i = 0; i < NetworkCache.getReadyMachines().size(); i++) {
 				while(MD5Cracker.range > 0) {
-					cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
-					MD5Cracker.j = 62 - range;
+					//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+					//MD5Cracker.calculator(toCrack)
 					if(MD5Cracker.range - MD5Cracker.tempRange > 0 && MD5Cracker.range - (2 * MD5Cracker.tempRange) > 0 ) {
 						MD5Cracker.tempRange = MD5Cracker.range;
 					}
-					range = range - tempRange;
 				}
+				//MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange;
 			}
-				//cracker.generate("", 60, 0, "b764be88d07a84126fd57a9c4071fed8");
-			//}
-		
 		
 		
 		

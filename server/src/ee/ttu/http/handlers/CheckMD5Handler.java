@@ -16,6 +16,7 @@ import ee.ttu.util.Log;
 
 //Rehkenduspäringu saatmine
 public class CheckMD5Handler extends PostHandler{
+	public static String answer;
 	@Override
 	public void handle(HttpExchange httpExchange) throws IOException {
 		//super.handle(httpExchange);
@@ -34,7 +35,9 @@ public class CheckMD5Handler extends PostHandler{
 		String originalPort = (String) dataMap.get("port");
 		String id = (String) dataMap.get("id");
 		String md5 = (String) dataMap.get("md5");
-		
+		//MD5Cracker cracker = new MD5Cracker();
+		//String md5 = (String) dataMap.get(cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8"));
+ 		
 		/* TODO - Sten
 		 * Selle klassi käivitab ühte tükki tegev arvuti
 		 * Seega ta peaks lugema sisse endale antud tüki - seda teeb ta üleval,
@@ -53,8 +56,31 @@ public class CheckMD5Handler extends PostHandler{
 		Log.info("Original ip: " + originalIP + ", Original port: " + originalPort + ", id: " + id + ", md5: " + md5);
 		
 		int result = 1;
-		String answer = MD5Cracker.calculator(md5); //See on vale
-		if (answer != null){
+		//MD5Cracker cracker = new MD5Cracker();
+		
+		/*while(MD5Cracker.range > 0) {
+			MD5Cracker.j = 62 - MD5Cracker.range;
+			cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+			answer = MD5Cracker.calculator(md5);
+			if(MD5Cracker.range - MD5Cracker.tempRange > 0 && MD5Cracker.range - (2 * MD5Cracker.tempRange) > 0 ) {
+				MD5Cracker.tempRange = MD5Cracker.range;
+			}
+		}*/
+		MD5Cracker cracker = new MD5Cracker();
+		cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+		MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange;
+		answer = MD5Cracker.code;
+		/*while(MD5Cracker.range > 0) {
+			MD5Cracker cracker = new MD5Cracker();
+			cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+			
+			MD5Cracker.j = 62 - MD5Cracker.range;
+			answer = MD5Cracker.code;
+		}*/
+		//String answer = MD5Cracker.code;
+		
+		//String answer = MD5Cracker.calculator(md5); //See on vale
+		if (answer.equals(MD5Cracker.calculator(md5))){
 			result = 0;
 		}
 		
