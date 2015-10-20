@@ -69,100 +69,20 @@ public class CrackHandler extends GetHandler{
 		} catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
 		}
-
-        
-        //TEST: Kutsub kohe ise crackeri välja
-        //Generate välja kutsutud! Muutujad on, str: 88, pos: 60, length: 0, toCrack: dd97813dd40be87559aaefed642c3fbb
-        //MD5Cracker cracker = new MD5Cracker();
-        // cracker.generate("98", 60, 0, "dd97813dd40be87559aaefed642c3fbb");
-        //System.out.println("----------------------------- ");
-        
-		//TEST: Otsib teatud kombinatsiooni numbri 
-		/*
-    	List<String> list = new ArrayList<>();
-        for (char c: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray()) {
-        	list.add(Character.toString(c));
-        }
-        
-        LetterCombination test = new LetterCombination();
-        String findWord = test.findWord(2, list, "ig");
-        //System.out.println("Leitud sõna on: " + findWord);
-        
-        //TEST: Otsib kombinatsioonid vastavalt numbritele
-        LetterCombination test2 = new LetterCombination();
-        int nr = 10000;
-        int nr2 = 100000;
-		System.out.println("TEST: At " + nr + " is " + test2.generateCombinations(4, list, nr));
-		
-		LetterCombination test3 = new LetterCombination();
-		System.out.println("TEST: At " + nr2 + " is " + test3.generateCombinations(4, list, nr2));
-		*/
-		
-		
-		/*int tempRange;
-		int range;
-		int j;*/
-		//cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
-		/*if(NetworkCache.getReadyMachines().size() <= 0) {
-			tempRange = 62;
-		} else {
-			tempRange = 62 / NetworkCache.getReadyMachines().size();
-		}*/
-		/*tempRange = 62 / NetworkCache.getReadyMachines().size();
-		range = 62;
-		String tempSet ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		for(String computer: NetworkCache.getReadyMachines()) {
-			MD5Cracker cracker = new MD5Cracker();
-			while(range > 0) {
-				int j = 62 - range;
-				for(i = 62 - range; i <= tempRange + j; i++) {
-					//Log.info("char " +tempSet.charAt(i));
-					//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
-					//cracker.generate(tempSet.charAt(i) + "", i, 0, "b764be88d07a84126fd57a9c4071fed8");
-					cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
-					
-				}
-				//cracker.generate(MD5Cracker.tempSet.charAt(MD5Cracker.k) + "", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
-				//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
-				if( range - tempRange > 0 && range - ( 2 * tempRange) < 0) {
-					tempRange = range;
-				}
-				range = range - tempRange;
-			}
-		}
-		System.out.println(range);
-		*/
-		/*tempRange = 62 / NetworkCache.getReadyMachines().size();
-		range = 62;
-		MD5Cracker cracker = new MD5Cracker();
-		for(int i = 0; i < NetworkCache.getReadyMachines().size(); i++) {
-			while(range > 0) {
-				j = 62 - range;
-				if(range - tempRange > 0 && range - (2 * tempRange ) < 0) {
-					tempRange = range;
-				}
-				range = range - tempRange;
-			}
-			cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
-		}*/
-		//MD5Cracker cracker = new MD5Cracker();
-		//for(String computer: NetworkCache.getReadyMachines()) {
-
-			//for(int i = 0; i < NetworkCache.getReadyMachines().size();i++) {
-
-			//}
-				//cracker.generate("", 60, 0, "b764be88d07a84126fd57a9c4071fed8");
-			//}
-			for(int i = 0; i < NetworkCache.getReadyMachines().size(); i++) {
+			//MD5Cracker cracker = new MD5Cracker();
+			/*for(int i = 0; i < NetworkCache.getReadyMachines().size(); i++) {
 				while(MD5Cracker.range > 0) {
-					//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
-					//MD5Cracker.calculator(toCrack)
+					MD5Cracker.j = 62 - MD5Cracker.range;
 					if(MD5Cracker.range - MD5Cracker.tempRange > 0 && MD5Cracker.range - (2 * MD5Cracker.tempRange) > 0 ) {
 						MD5Cracker.tempRange = MD5Cracker.range;
 					}
+					MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange;
 				}
-				//MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange;
-			}
+				
+			}*/
+			MD5Cracker cracker = new MD5Cracker();
+			cracker.generate("", 60, 0, "dd97813dd40be87559aaefed642c3fbb");
+			MD5Cracker.range();
 		
 		
 		
@@ -191,7 +111,8 @@ public class CrackHandler extends GetHandler{
 
 		//Send resourcereply to the original computer
 		String requestbody;
-        
+		int gg = MD5Cracker.tempRange;
+		String tempLen = MD5Cracker.tempSet.charAt(MD5Cracker.j) + "-" + MD5Cracker.tempSet.charAt(MD5Cracker.tempRange-1);
         System.out.println("----------------------------- ");
         //Log.debug("suurus:" + NetworkCache.getReadyMachines().size());
         //Log.debug("suurus:" + tempRange);
@@ -200,6 +121,7 @@ public class CrackHandler extends GetHandler{
 		checkObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
 		checkObject.put("id", "sdfgsd45");
 		checkObject.put("md5", ResourceHolder.getHashToCrack());
+		checkObject.put("range", tempLen);
 		
 		requestbody = checkObject.toString();
 		

@@ -23,14 +23,31 @@ public class MD5Cracker {
 	    public static String wildcard;
 	    public static String tempSet;
 	    public static int j;
+	    public static int range;
+	    public static int tempRange;
 
 	    public MD5Cracker() {
 	        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 	        tempSet ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			if(NetworkCache.getReadyMachines().size() <= 0) {
+				tempRange = 62;
+			} else {
+				tempRange = 62 / NetworkCache.getReadyMachines().size();
+			}
 	        min = 1; //char min start
-	        max = 7; //char max end 
+	        max = 7; //char max end
 	    }
-
+	    public static int range() {
+			while(range > 0) {
+				j = 62 - range;
+				if(range - tempRange > 0 && range - (2 * tempRange) > 0 ) {
+					tempRange = range;
+				}
+				range = range - tempRange;
+			} 
+			return range;
+			
+	    }
 	    public String generate(String str, int pos, int length, String toCrack) {
 	    	//System.out.println("Generate välja kutsutud! Muutujad on, str: " + str + ", pos: " + pos + ", length: "
 	    		//	+ length + ", toCrack: " + toCrack);
@@ -77,8 +94,6 @@ public class MD5Cracker {
 
 	        return code;
 	    }
-	    public static int range;
-	    public static int tempRange;
 	    public static String calculator(String toCrack) {
 	    	//System.out.println("olen omadega kalkulaatoris!");
 	    	final double startTime = System.currentTimeMillis();
@@ -91,12 +106,7 @@ public class MD5Cracker {
 	        //System.out.println("väljun kalkulaatorist!");
 	        
 	        //pikkus on siis ette antud, nt meil min 1 ja max 7, teeb kuni selle pikkuseni
-			range = 62;
-			if(NetworkCache.getReadyMachines().size() < 1) {
-				tempRange = 62;
-			} else {
-				tempRange = 62 / NetworkCache.getReadyMachines().size();
-			}
+	        range = tempSet.length();
 	        for (int length = bruteforce.min; length < bruteforce.max; length++) { // Change bruteforce.min and bruteforce.max for number of characters to bruteforce. 
 	        	//System.out.println("Siin kutsun bruteforce.generate välja!");
 				/*for(k = 62 - CrackHandler.range; k <= CrackHandler.tempRange + CrackHandler.j; k++) {

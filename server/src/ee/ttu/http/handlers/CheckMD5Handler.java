@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import com.sun.net.httpserver.HttpExchange;
+
 import ee.ttu.http.handlers.model.PostHandler;
 import ee.ttu.http.service.JsonParser2;
 import ee.ttu.http.service.NetworkCache;
@@ -66,10 +67,13 @@ public class CheckMD5Handler extends PostHandler{
 				MD5Cracker.tempRange = MD5Cracker.range;
 			}
 		}*/
-		MD5Cracker cracker = new MD5Cracker();
-		cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
-		MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange;
-		answer = MD5Cracker.code;
+		/*if(MD5Cracker.range > 0) {
+			MD5Cracker.j = 62 - MD5Cracker.range;
+			MD5Cracker cracker = new MD5Cracker();
+			cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
+			MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange;
+			answer = MD5Cracker.code;
+		}*/
 		/*while(MD5Cracker.range > 0) {
 			MD5Cracker cracker = new MD5Cracker();
 			cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
@@ -78,19 +82,37 @@ public class CheckMD5Handler extends PostHandler{
 			answer = MD5Cracker.code;
 		}*/
 		//String answer = MD5Cracker.code;
-		
+		//MD5Cracker cracker = new MD5Cracker();
+		//cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
 		//String answer = MD5Cracker.calculator(md5); //See on vale
+		//while(MD5Cracker.range > 0) {
+			//cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8");
+			//MD5Cracker.calculator(toCrack)
+			
+			//MD5Cracker.j = 62 - MD5Cracker.range;
+			//if(MD5Cracker.range - MD5Cracker.tempRange > 0 && MD5Cracker.range - (2 * MD5Cracker.tempRange) > 0 ) {
+			//	MD5Cracker.tempRange = MD5Cracker.range;
+			//}
+			//cracker.generate("", 0, 0, "dd97813dd40be87559aaefed642c3fbb");
+			//MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange
+		//}
+		//MD5Cracker.range();
+		answer = MD5Cracker.code;
+		
 		if (answer.equals(MD5Cracker.calculator(md5))){
 			result = 0;
 		}
-		
-		JSONObject answerObject = new JSONObject();
+		int gg = MD5Cracker.tempRange;
+		String tempLen = MD5Cracker.tempSet.charAt(MD5Cracker.j) + "-" + MD5Cracker.tempSet.charAt(MD5Cracker.tempRange-1 + MD5Cracker.j);
+		JSONObject answerObject = new JSONObject(); 
 		answerObject.put("ip", NetworkCache.getServerIP());
 		answerObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
 		answerObject.put("id", id);
 		answerObject.put("md5", md5);
 		answerObject.put("result", String.valueOf( result ));
 		answerObject.put("resultstring", answer);
+		answerObject.put("range", tempLen);
+		
 		
 		String requestbody = answerObject.toString();
 		Log.info("RequestBody: " + requestbody);
