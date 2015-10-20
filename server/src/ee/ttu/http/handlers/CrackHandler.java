@@ -112,6 +112,7 @@ public class CrackHandler extends GetHandler{
 		//Send resourcereply to the original computer
 		String requestbody;
 		int gg = MD5Cracker.tempRange;
+		int nr = 1;
 		String tempLen = MD5Cracker.tempSet.charAt(MD5Cracker.j) + "-" + MD5Cracker.tempSet.charAt(MD5Cracker.tempRange-1);
         System.out.println("----------------------------- ");
         //Log.debug("suurus:" + NetworkCache.getReadyMachines().size());
@@ -123,13 +124,14 @@ public class CrackHandler extends GetHandler{
 		checkObject.put("md5", ResourceHolder.getHashToCrack());
 		checkObject.put("range", tempLen);
 		
-		requestbody = checkObject.toString();
 		
-		Log.info("RequestBody for checkmd5: " + requestbody);
+		//Log.info("RequestBody for checkmd5: " + requestbody);
 		
 		Map<String, String> requestheader = new HashMap<String, String>();
 		requestheader.put("Content-Type", "application/json"); 
 		for (String aadress : NetworkCache.getReadyMachines()){
+			checkObject.put("nr", nr++);
+			requestbody = checkObject.toString();
 			sendPOST(requestbody, requestheader, aadress + "/checkmd5");
 		}
 		

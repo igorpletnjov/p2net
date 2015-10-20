@@ -36,6 +36,7 @@ public class CheckMD5Handler extends PostHandler{
 		String originalPort = (String) dataMap.get("port");
 		String id = (String) dataMap.get("id");
 		String md5 = (String) dataMap.get("md5");
+		int nr = (int) dataMap.get("nr");
 		//MD5Cracker cracker = new MD5Cracker();
 		//String md5 = (String) dataMap.get(cracker.generate("", 0, 0, "b764be88d07a84126fd57a9c4071fed8"));
  		
@@ -54,7 +55,7 @@ public class CheckMD5Handler extends PostHandler{
 		 * Võib-olla peaks ta kuidagi ka aega võtma, sest Tanelil sedasi kirjas - "result: mis sai (leidsin stringi: 0, ei leidnud stringi: 1, ei jõudnud rehkendada: 2)"
 		 */
 		
-		Log.info("Original ip: " + originalIP + ", Original port: " + originalPort + ", id: " + id + ", md5: " + md5);
+		Log.info("Original ip: " + originalIP + ", Original port: " + originalPort + ", id: " + id + ", md5: " + md5 + ", nr: " + nr);
 		
 		int result = 1;
 		//MD5Cracker cracker = new MD5Cracker();
@@ -97,33 +98,59 @@ public class CheckMD5Handler extends PostHandler{
 			//MD5Cracker.range = MD5Cracker.range - MD5Cracker.tempRange
 		//}
 		//MD5Cracker.range();
-		answer = MD5Cracker.code;
 		
-		if (answer.equals(MD5Cracker.calculator(md5))){
-			result = 0;
-		}
-		int gg = MD5Cracker.tempRange;
-		String tempLen = MD5Cracker.tempSet.charAt(MD5Cracker.j) + "-" + MD5Cracker.tempSet.charAt(MD5Cracker.tempRange-1 + MD5Cracker.j);
-		JSONObject answerObject = new JSONObject(); 
-		answerObject.put("ip", NetworkCache.getServerIP());
-		answerObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
-		answerObject.put("id", id);
-		answerObject.put("md5", md5);
-		answerObject.put("result", String.valueOf( result ));
-		answerObject.put("resultstring", answer);
-		answerObject.put("range", tempLen);
+		if (nr == 1){
+			answer = MD5Cracker.code;
+			
+			if (answer.equals(MD5Cracker.calculator(md5))){
+				result = 0;
+			}
+			int gg = MD5Cracker.tempRange;
+			String tempLen = MD5Cracker.tempSet.charAt(MD5Cracker.j) + "-" + MD5Cracker.tempSet.charAt(MD5Cracker.tempRange-1 + MD5Cracker.j);
+			JSONObject answerObject = new JSONObject(); 
+			answerObject.put("ip", NetworkCache.getServerIP());
+			answerObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
+			answerObject.put("id", id);
+			answerObject.put("md5", md5);
+			answerObject.put("result", String.valueOf( result ));
+			answerObject.put("resultstring", answer);
+			answerObject.put("range", tempLen);
+			
+			
+			String requestbody = answerObject.toString();
+			Log.info("RequestBody: " + requestbody);
+			
+			ResourceHolder.setResultString(answer);
 		
-		
-		String requestbody = answerObject.toString();
-		Log.info("RequestBody: " + requestbody);
-		
-		ResourceHolder.setResultString(answer);
-	
-		Map<String, String> requestheader = new HashMap<String, String>();
-		requestheader.put("Content-Type", "application/json");
-		sendPOST(requestbody, requestheader, originalIP + ":" + originalPort + "/answermd5");
+			Map<String, String> requestheader = new HashMap<String, String>();
+			requestheader.put("Content-Type", "application/json");
+			sendPOST(requestbody, requestheader, originalIP + ":" + originalPort + "/answermd5");
 
-		sendResponse("0", httpExchange);
+			sendResponse("0", httpExchange);
+		} else {
+			String tempLen = null;
+			JSONObject answerObject = new JSONObject(); 
+			answerObject.put("ip", NetworkCache.getServerIP());
+			answerObject.put("port", String.valueOf( NetworkCache.getServerPort() ));
+			answerObject.put("id", id);
+			answerObject.put("md5", md5);
+			answerObject.put("result", String.valueOf( result ));
+			answerObject.put("resultstring", answer);
+			answerObject.put("range", tempLen);
+			
+			
+			String requestbody = answerObject.toString();
+			Log.info("RequestBody: " + requestbody);
+			
+			ResourceHolder.setResultString(answer);
+		
+			Map<String, String> requestheader = new HashMap<String, String>();
+			requestheader.put("Content-Type", "application/json");
+			sendPOST(requestbody, requestheader, originalIP + ":" + originalPort + "/answermd5");
+
+			sendResponse("0", httpExchange);
+		}
+		
 		
 		
 		/* 
