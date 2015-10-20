@@ -29,7 +29,7 @@ import ee.ttu.util.Log;
 
 public class ServerMain {
 	
-	final static int defaultPort = 1217;
+	final static int defaultPort = 1215;
 	public static void main(String[] args) throws Exception {
 		HttpServer server = null;
 		NetworkCache.setServerIP("127.0.0.1"); // Hardcoded to test on single machine

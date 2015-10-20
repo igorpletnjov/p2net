@@ -81,7 +81,7 @@ public class CrackHandler extends GetHandler{
 				
 			}*/
 			MD5Cracker cracker = new MD5Cracker();
-			cracker.generate("", 60, 0, "dd97813dd40be87559aaefed642c3fbb");
+			cracker.generate("", 60, 0, ResourceHolder.getHashToCrack());
 			MD5Cracker.range();
 		
 		
