@@ -2,6 +2,7 @@ package ee.ttu.http.handlers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,9 @@ public class ResourceHandler extends GetHandler {
 			Log.info("SendIP: " + sendip + "; sendPort: " + sendport + "; ttl: " + ttl + "; id: " + id + "; noask: " + noask);
 			
 			if ( ttl > 1 ) { //"Seejuures ei saadeta päringut edasi, kui sissetulnud ttl oli 1 või vähem"
-				
+				if ( noask == null )
+					noask = new ArrayList<String>();
+				noask.add( NetworkCache.getServerIP() + "_" + NetworkCache.getServerPort() );
 				Map<String, String> requestParams = paramsHelper.createResourceParams(sendip, sendport, id, ttl, noask);
 				//Create new parameters
 				String machineToNoask;
